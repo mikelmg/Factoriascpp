@@ -3,7 +3,7 @@
 #include <vector>
 
 
-const std::vector<Color> LVLCOLORS = {
+static const std::vector<Color> LVLCOLORS = {
     RAYWHITE,
     BEIGE,
     WHITE,

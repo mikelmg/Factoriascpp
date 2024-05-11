@@ -1,4 +1,5 @@
 #pragma once
+#include "globalParam.h"
 
 const int MESH_DISTANCE = 20;
 
