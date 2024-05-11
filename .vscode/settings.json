@@ -1,0 +1,19 @@
+{
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/*.o": true,
+		"**/*.exe": true,
+	},
+	"files.associations": {
+		"*.m": "cpp",
+		"string": "cpp",
+		"iostream": "cpp",
+		"iosfwd": "cpp",
+		"new": "cpp",
+		"cmath": "cpp"
+	}
+}
