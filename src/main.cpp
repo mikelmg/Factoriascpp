@@ -7,11 +7,8 @@
 #include <math.h>
 #include <iostream>
 #include <raymath.h>
-#include "rlgl.h"
 
 using namespace std;
-
-
 
 int main()
 {
@@ -67,7 +64,7 @@ int main()
 
         ClearBackground(BLACK);
 
-        BackgroundMesh::Draw();
+        BackgroundMesh::Draw(camera);
 
         float upSize = 6* sin( clock()/150.0f  );
 

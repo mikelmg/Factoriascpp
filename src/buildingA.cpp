@@ -24,24 +24,3 @@ void BuildingA::Draw()
 {
     DrawRectangleGradientH(position.x, position.y, BUILDING_SIZE, BUILDING_SIZE, this->color, GOLD);
 }
-
-Vector2 BuildingA::GetPosition(){
-    return position;
-}
-
-void BuildingA::SetPosition(Vector2 position){
-    this->position.x = position.x;
-    this->position.y = position.y;
-}
-
-void BuildingA::Selected(){
-    selected = true;
-}
-
-void BuildingA::NSelected(){
-    selected = false;
-}
-
-bool BuildingA::GetSelected(){
-    return selected; 
-}

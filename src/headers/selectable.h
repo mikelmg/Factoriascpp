@@ -3,12 +3,17 @@
 #include <vector>
 
 
-class BuildingA //Declaration forward
+class Selectable //Declaration forward
 {
 public:
-    
-
-private:
+    Vector2 GetPosition();
+    void SetPosition(Vector2 position);
+    void Selected();
+    void NSelected();
+    bool GetSelected();
+protected:
     Vector2 selectedPosition;
+    Vector2 position;
+
     bool selected;
 };

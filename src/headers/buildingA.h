@@ -1,6 +1,7 @@
 #pragma once
 #include <raylib.h>
 #include <vector>
+#include "selectable.h"
 
 
 static const std::vector<Color> LVLCOLORS = {
@@ -28,22 +29,24 @@ static const std::vector<Color> LVLCOLORS = {
 };
 const int BUILDING_SIZE = 40;
 
-class BuildingA //Declaration forward
+class BuildingA: public Selectable //Declaration forward
 {
 public:
     BuildingA();
     BuildingA(int x, int y, int level);
     void Update(float dt);
     void Draw();
-    Vector2 GetPosition();
-    void SetPosition(Vector2 position);
-    void Selected();
-    void NSelected();
-    bool GetSelected();
+    // Vector2 GetPosition();
+    // void SetPosition(Vector2 position);
+    // void Selected();
+    // void NSelected();
+    // bool GetSelected();
 
 private:
-    Vector2 position;
+    // Vector2 position;
+    // bool selected;
+
     int level;
     Color color;
-    bool selected;
+
 };

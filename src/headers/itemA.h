@@ -3,7 +3,7 @@
 
 
 
-const int ITEM_VELOCITY = 20;
+const int ITEM_VELOCITY = 70;
 
 class ItemA //Declaration forward
 {
