@@ -3,9 +3,9 @@
 
 Item::Item()
 {
-    position.x = 100;
+    position.x   = 100;
     position.y = 100;
-    this->color = {20, 160, 133, 255};
+    color = {20, 160, 133, 255};
 }
 
 Item::Item(int x, int y, Color color)
