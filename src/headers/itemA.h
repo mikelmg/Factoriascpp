@@ -2,9 +2,6 @@
 #include <raylib.h>
 
 
-
-const int ITEM_VELOCITY = 70;
-
 class ItemA //Declaration forward
 {
 public:

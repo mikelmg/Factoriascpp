@@ -2,7 +2,7 @@
 #include <raylib.h>
 #include <vector>
 
-
+// 
 const int ITEM_VELOCITY = 70;
 
 class Item //Declaration forward

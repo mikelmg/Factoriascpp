@@ -1,4 +1,6 @@
 #include "headers/itemA.h"
+#include "headers/item.h"
+
 
 ItemA::ItemA()
 {

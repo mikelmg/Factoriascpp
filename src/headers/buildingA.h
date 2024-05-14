@@ -35,7 +35,7 @@ public:
     BuildingA();
     BuildingA(int x, int y, int level);
     void Update(float dt);
-    void Draw();
+    void Draw() override;
     // Vector2 GetPosition();
     // void SetPosition(Vector2 position);
     // void Selected();
