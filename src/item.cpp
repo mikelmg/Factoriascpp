@@ -3,15 +3,15 @@
 
 Item::Item()
 {
-    this->x   = 100;
-    this->y = 100;
-    this->color = {20, 160, 133, 255};
+    position.x   = 100;
+    position.y = 100;
+    color = {20, 160, 133, 255};
 }
 
 Item::Item(int x, int y, Color color)
 {
-    this->x = x;
-    this->y = y;
+    position.x = x;
+    position.y = y;
 
     this->color = color;
 }
