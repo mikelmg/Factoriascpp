@@ -1,6 +1,6 @@
-#include "headers/buildingA.h"
+#include "headers/building.h"
 
-BuildingA::BuildingA(){
+Building::Building(){
 
     position.x = 20;
     position.y = 20;
@@ -9,7 +9,7 @@ BuildingA::BuildingA(){
     this->color = LVLCOLORS[level];
 }
 
-BuildingA::BuildingA(int x, int y, int level){
+Building::Building(int x, int y, int level){
 
     position.x = x;
     position.y = y;
@@ -20,7 +20,7 @@ BuildingA::BuildingA(int x, int y, int level){
 }
 
 
-void BuildingA::Draw()
+void Building::Draw()
 {
     DrawRectangleGradientH(position.x, position.y, BUILDING_SIZE, BUILDING_SIZE, this->color, GOLD);
 }
