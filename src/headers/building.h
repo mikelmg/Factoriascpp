@@ -29,11 +29,11 @@ static const std::vector<Color> LVLCOLORS = {
 };
 const int BUILDING_SIZE = 40;
 
-class BuildingA: public Selectable //Declaration forward
+class Building: public Selectable //Declaration forward
 {
 public:
-    BuildingA();
-    BuildingA(int x, int y, int level);
+    Building();
+    Building(int x, int y, int level);
     void Update(float dt);
     void Draw() override;
     // Vector2 GetPosition();

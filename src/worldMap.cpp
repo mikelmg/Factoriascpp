@@ -1,31 +1,31 @@
 #include "headers/worldMap.h"
-#include "headers/buildingA.h"
+#include "headers/building.h"
 #include <raymath.h>
 
 
 WorldMap::WorldMap()
 {
-    world[{0,1}] = BuildingA(100, 100, 5);
-    world[{1,1}] = BuildingA(200, 200, 3);
+    world[{0,1}] = Building(100, 100, 5);
+    world[{1,1}] = Building(200, 200, 3);
 }
 
-void WorldMap::update()
+void WorldMap::Update()
 {
 
     
 }
 
-void WorldMap::draw()
+void WorldMap::Draw()
 {
-    for (map<pair<int,int>, BuildingA>::iterator itr = world.begin(); itr != world.end(); itr++){
+    for (map<pair<int,int>, Building>::iterator itr = world.begin(); itr != world.end(); itr++){
         itr->second.Draw();
     }
 
 }
 
-void WorldMap::drag(Camera2D camera)
+void WorldMap::Drag(Camera2D camera)
 {
-    for (map<pair<int,int>, BuildingA>::iterator itr = world.begin(); itr != world.end(); itr++){
+    for (map<pair<int,int>, Building>::iterator itr = world.begin(); itr != world.end(); itr++){
 
         //Detecto si pincho edificio y actualizo su posición
         if( itr->second.GetSelected() || (IsMouseButtonDown(MOUSE_LEFT_BUTTON) &&

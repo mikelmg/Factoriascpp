@@ -1,5 +1,5 @@
 #include "headers/itemA.h"
-#include "headers/buildingA.h"
+#include "headers/Building.h"
 #include "headers/backgroundMesh.h"
 #include "headers/globalParam.h"
 #include "headers/worldMap.h"
@@ -73,9 +73,9 @@ int main()
         itemA2.Draw(upSize);
 
 
-        worldMap.drag(camera);
+        worldMap.Drag(camera);
 
-        worldMap.draw();
+        worldMap.Draw();
 
         //Linea comparacion items
         DrawRectangle(5, 58, SCREENWIDTH, 2, BLUE);
