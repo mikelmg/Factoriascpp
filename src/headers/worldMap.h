@@ -21,5 +21,7 @@ public:
 private:
     //2D vector of Selectables
     map<pair<int,int>, Building> world;
+    map<pair<int,int>, Building*> world2;
+
     // vector<Conections> Conections;
 };

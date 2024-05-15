@@ -1,4 +1,4 @@
-#include "headers/itemA.h"
+#include "headers/item.h"
 #include "headers/Building.h"
 #include "headers/backgroundMesh.h"
 #include "headers/globalParam.h"
@@ -14,13 +14,13 @@ using namespace std;
 
 int main()
 {
-    ItemA itemA1 = ItemA(10, 50, RED);
-    ItemA itemA2 = ItemA(50, 50, GREEN);
+    Item itemA1 = Item(10, 50, RED);
+    Item itemA2 = Item(50, 50, GREEN);
 
     WorldMap worldMap = WorldMap();
 
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "My first RAYLIB program!");
-    SetTargetFPS(60);
+    // SetTargetFPS(60);
 
     Camera2D camera = { 0 };
     camera.zoom = 1.0f;
