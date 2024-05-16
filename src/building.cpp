@@ -1,4 +1,5 @@
 #include "headers/building.h"
+#include <raymath.h>
 
 Building::Building(){
 
@@ -23,4 +24,9 @@ Building::Building(int x, int y, int level){
 void Building::Draw()
 {
     DrawRectangleGradientH(position.x, position.y, BUILDING_SIZE, BUILDING_SIZE, this->color, GOLD);
+}
+
+Vector2 Building::GetCenter()
+{
+    return Vector2(Vector2AddValue(position, BUILDING_SIZE/2) );
 }

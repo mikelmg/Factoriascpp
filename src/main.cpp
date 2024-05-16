@@ -72,7 +72,7 @@ int main()
         itemA1.Draw(upSize);
         itemA2.Draw(upSize);
 
-
+        worldMap.Update();
         worldMap.Drag(camera);
 
         worldMap.Draw();

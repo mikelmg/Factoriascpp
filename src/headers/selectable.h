@@ -11,6 +11,9 @@ public:
     void Selected();
     void NSelected();
     bool GetSelected();
+    virtual void Draw() = 0;
+    virtual Vector2 GetCenter() = 0;
+
 protected:
     Vector2 selectedPosition;
     Vector2 position;

@@ -36,6 +36,7 @@ public:
     Building(int x, int y, int level);
     void Update(float dt);
     void Draw();
+    Vector2 GetCenter();
     // Vector2 GetPosition();
     // void SetPosition(Vector2 position);
     // void Selected();
