@@ -1,6 +1,5 @@
 #include "headers/item.h"
 
-
 Item::Item()
 {
     position.x   = 100;
@@ -8,22 +7,41 @@ Item::Item()
     color = {20, 160, 133, 255};
 }
 
-Item::Item(int x, int y, Color color)
+Item::Item(Vector2 position, ItemsType type)
 {
-    position.x = x;
-    position.y = y;
+    this->position = position;
 
-    this->color = color;
+    this->type = type;
+
+    switch (type)
+    {
+    case IRON:
+        color = GRAY;
+        break;
+    
+    case COPPER:
+        color = ORANGE;
+        break;
+
+    case COBALT:
+        color = BLUE;
+        break;
+
+    }
 }
 
 Vector2 Item::GetPosition(){
     return position;
 }
 
-
+void Item::SetPosition(Vector2 newPosition)
+{
+    position = newPosition;
+}
 void Item::Update(float dt)
 {
-    position.x += ITEM_VELOCITY*dt;
+    // position.x += ITEM_VELOCITY*dt;
+
 }
 
 void Item::Draw(float upSize)

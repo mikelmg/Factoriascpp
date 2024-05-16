@@ -14,10 +14,6 @@ using namespace std;
 
 int main()
 {
-    Item itemA1 = Item(10, 50, RED);
-    Item itemA2 = Item(50, 50, GREEN);
-
-    WorldMap worldMap = WorldMap();
 
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "My first RAYLIB program!");
     // SetTargetFPS(60);
@@ -25,11 +21,14 @@ int main()
     Camera2D camera = { 0 };
     camera.zoom = 1.0f;
 
+    WorldMap worldMap = WorldMap(&camera);
+
+
     while (!WindowShouldClose())
     {
 
-        itemA1.Update(GetFrameTime());
-        itemA2.Update(GetFrameTime());
+        // itemA1.Update(GetFrameTime());
+        // itemA2.Update(GetFrameTime());
 
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
         {
@@ -69,13 +68,12 @@ int main()
 
         float upSize = 6* sin( clock()/150.0f  );
 
-        itemA1.Draw(upSize);
-        itemA2.Draw(upSize);
+        // itemA1.Draw(upSize);
+        // itemA2.Draw(upSize);
 
-        worldMap.Update();
-        worldMap.Drag(camera);
+        worldMap.Update(GetFrameTime());
 
-        worldMap.Draw();
+        worldMap.Draw(upSize);
 
         //Linea comparacion items
         DrawRectangle(5, 58, SCREENWIDTH, 2, BLUE);
