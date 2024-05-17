@@ -1,7 +1,7 @@
 #include "headers/worldMap.h"
 #include "headers/building.h"
 #include <raymath.h>
-
+#include <math.h>
 #include <iostream>
 
 
@@ -9,6 +9,8 @@ WorldMap::WorldMap()
 {
     world.push_back (new Building(100, 100, 5));
     world.push_back (new Building(200, 200, 3));
+
+    conSelected = false;
 }
 
 WorldMap::WorldMap(Camera2D* camera)
@@ -18,8 +20,9 @@ WorldMap::WorldMap(Camera2D* camera)
 
     this->camera = camera;
 
-    addConnection();
+    // AddConnection(world[0], world[1]);
 
+    conSelected = false;
 }
 
 
@@ -27,7 +30,8 @@ void WorldMap::Update(float dt)
 {
     upSize = 6* sin( clock()/150.0f  );
     //Move buildings
-    Drag();
+    CheckNewBuildingSelected();
+    CheckNewConnection();
 
     //Update Items
     for(Connection* con: connections){
@@ -54,7 +58,7 @@ void WorldMap::Draw()
     }
 }
 
-void WorldMap::Drag()
+void WorldMap::CheckNewBuildingSelected()
 {
     for(Building* building: world) {
         
@@ -76,9 +80,51 @@ void WorldMap::Drag()
 
 }
 
-void WorldMap::addConnection(){
-    //TODO PLACEHOLDER, addconections to a given building, conn
-    connections.push_back(new Connection(world[0], world[1]));
-    world[0]->AddConnection(connections[0]);
-    world[1]->AddConnection(connections[0]);
+
+void WorldMap::AddConnection(Building* BuildingO, Building* BuildingT){
+    connections.push_back(new Connection(BuildingO,BuildingT));
+    BuildingO->AddConnection(connections.back());
+    BuildingT->AddConnection(connections.back());
+}
+
+//Pos Random
+void WorldMap::AddBuilding(){
+    world.push_back(new Building(100* GetRandomValue(0, 10), 100* GetRandomValue(0, 10), 5));
+}
+
+
+void WorldMap::CheckNewConnection(){
+    //If right button but not selected
+    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !conSelected){
+        //Coordinates of mouse
+        Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
+        //Check every building for that coordinates
+        for (Building* building: world){
+            if (CheckCollisionPointRec(GetScreenToWorld2D(GetMousePosition(), *camera), 
+                Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE}))
+            {
+                conSelected = true;
+                buildingConnSelected = building;
+            }
+        }
+    }
+    //If left button and Selected
+    else if ((IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && conSelected){
+        Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
+        //Check every building
+        for (Building* building: world){
+            if (CheckCollisionPointRec(GetScreenToWorld2D(GetMousePosition(), *camera), 
+                Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE}))
+            {//Add new connection
+                AddConnection(buildingConnSelected, building);
+                conSelected = false;
+            }
+        }
+    }
+    //No button but connection selected
+    else if (conSelected){
+        DrawLineBezier(buildingConnSelected->GetCenter(), GetScreenToWorld2D(GetMousePosition(), *camera), 4, RED );
+    }
+    
+
 }

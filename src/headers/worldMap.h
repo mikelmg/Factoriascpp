@@ -19,7 +19,10 @@ public:
     // BackgroundMesh();
     void Update(float dt);
     void Draw();
-    void Drag();
+    void CheckNewBuildingSelected();
+    void AddConnection(Building* BuildingO, Building* BuildingT);
+    void AddBuilding();
+    void CheckNewConnection();
     //TODO add buildings
     //TODO add Connections
 private:
@@ -33,6 +36,7 @@ private:
     float upSize;
 
     // map<pair<int,int>, Building*> world2;
-
+    Building* buildingConnSelected;
+    bool conSelected;
     // vector<Conections> Conections;
 };
