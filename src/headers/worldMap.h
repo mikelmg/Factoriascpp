@@ -20,7 +20,8 @@ public:
     void Update(float dt);
     void Draw(float upSize);
     void Drag();
-
+    //TODO add buildings
+    //TODO add Connections
 private:
     //2D vector of Selectables
     vector<Selectable*> world;

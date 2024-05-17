@@ -30,6 +30,8 @@ void Connection::Update(float dt)
         //Actualiza la f en relacion a la curva Belzier
         items[i].first+=0.2f*dt;
         //Actualiza su posicion 
+        //TODO Items don't need position now and their pos should be corrected
+        //TODO maybe correct their f so it's not a proportion but an absolute distance traveled
         items[i].second->SetPosition(GetSplinePointBezierCubic(origin->GetCenter(), controlO, control1,
             target->GetCenter(), items[i].first));
 
@@ -44,6 +46,7 @@ void Connection::Update(float dt)
 
 void Connection::Draw(float upSize)
 {
+    //#TODO Change the calculation of control points to only refresh when changed and store them as attributes
     Vector2 controlO {(origin->GetCenter().x + target->GetCenter().x)/2, 
         origin->GetCenter().y };
     Vector2 control1 {(origin->GetCenter().x + target->GetCenter().x)/2, 
@@ -63,6 +66,7 @@ void Connection::Draw(float upSize)
 
 void Connection::AddItem()
 {
+    //TODO add any kind of Item
     #define item new Item(origin->GetCenter(), COBALT)
     #define pairItem std::pair<float, Item*> (0,item)
     //Add par f, Item to the list
