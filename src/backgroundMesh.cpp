@@ -14,6 +14,6 @@ void BackgroundMesh::Draw(Camera2D camera){
     }
 
     for (int y = -MESH_SIZE_HEIGHT/2; y < MESH_SIZE_HEIGHT/2; y += MESH_DISTANCE){
-        DrawLine(-MESH_SIZE_WIDTH/2, y, MESH_SIZE_HEIGHT/2, y, MESHCOLOR);
+        DrawLine(-MESH_SIZE_WIDTH/2, y, MESH_SIZE_HEIGHT/2, y, Color{MESHCOLOR.r, MESHCOLOR.g, MESHCOLOR.b, pow(MESH_TRANSPARENCY ,camera.zoom)});
     }   
 }
