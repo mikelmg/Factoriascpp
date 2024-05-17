@@ -108,7 +108,7 @@ void WorldMap::CheckNewConnection(){
             }
         }
     }
-    //If left button and Selected
+    //If left/right button and Selected
     else if ((IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && conSelected){
         Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
         //Check every building
@@ -118,8 +118,11 @@ void WorldMap::CheckNewConnection(){
             {//Add new connection
                 AddConnection(buildingConnSelected, building);
                 conSelected = false;
-            }
+                break;
+            }            
         }
+        //Outside any building
+        conSelected = false;
     }
     //No button but connection selected
     else if (conSelected){
