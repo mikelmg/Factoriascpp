@@ -30,9 +30,9 @@ void WorldMap::Update(float dt)
 
     //Update Items
     for(Connection* con: connections){
-
+        
         spawnTimer += GetFrameTime();
-        if(spawnTimer >= 1){
+        if(spawnTimer >= 0.1){
             con->AddItem();
             spawnTimer=0;
         }

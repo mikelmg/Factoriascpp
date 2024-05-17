@@ -35,7 +35,8 @@ void Connection::Update(float dt)
 
         //If reached -> delete
         if(items[i].first > 1){
-            items.erase(items.begin() + i); 
+            delete items[i].second;
+            items.pop_back(); 
         }
     }
 
@@ -65,5 +66,5 @@ void Connection::AddItem()
     #define item new Item(origin->GetCenter(), COBALT)
     #define pairItem std::pair<float, Item*> (0,item)
     //Add par f, Item to the list
-    items.push_back(pairItem);
+    items.push_front(pairItem);
 }

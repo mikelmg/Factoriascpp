@@ -15,7 +15,7 @@ using namespace std;
 int main()
 {
 
-    InitWindow(SCREENWIDTH, SCREENHEIGHT, "My first RAYLIB program!");
+    InitWindow(SCREENWIDTH, SCREENHEIGHT, "Factores!");
     // SetTargetFPS(60);
 
     Camera2D camera = { 0 };

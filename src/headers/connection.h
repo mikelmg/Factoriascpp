@@ -1,7 +1,7 @@
 #pragma once
 #include <raylib.h>
 #include "selectable.h"
-#include <vector>
+#include <deque>
 #include <utility>
 #include "item.h"
 
@@ -22,7 +22,7 @@ public:
 protected:
     Selectable* origin;
     Selectable* target;
-    std::vector<std::pair<float, Item*>> items;
+    std::deque<std::pair<float, Item*>> items;
     bool selected;
     ItemsType type;
 };
