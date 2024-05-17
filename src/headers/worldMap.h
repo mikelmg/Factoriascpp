@@ -23,8 +23,9 @@ public:
     void AddConnection(Building* BuildingO, Building* BuildingT);
     void AddBuilding();
     void CheckNewConnection();
-    //TODO add buildings
-    //TODO add Connections
+    //TODO add/delete buildings
+    //TODO delete Connections
+    //TODO Snap buildings to grid
 private:
 
     void addConnection();

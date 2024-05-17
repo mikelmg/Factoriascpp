@@ -100,7 +100,7 @@ void WorldMap::CheckNewConnection(){
         Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
         //Check every building for that coordinates
         for (Building* building: world){
-            if (CheckCollisionPointRec(GetScreenToWorld2D(GetMousePosition(), *camera), 
+            if (CheckCollisionPointRec(mousePosition, 
                 Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE}))
             {
                 conSelected = true;
@@ -113,7 +113,7 @@ void WorldMap::CheckNewConnection(){
         Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
         //Check every building
         for (Building* building: world){
-            if (CheckCollisionPointRec(GetScreenToWorld2D(GetMousePosition(), *camera), 
+            if (CheckCollisionPointRec(mousePosition, 
                 Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE}))
             {//Add new connection
                 AddConnection(buildingConnSelected, building);
