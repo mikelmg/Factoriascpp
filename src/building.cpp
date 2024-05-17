@@ -30,3 +30,14 @@ Vector2 Building::GetCenter()
 {
     return Vector2(Vector2AddValue(position, BUILDING_SIZE/2) );
 }
+
+void Building::UpdateConnections()
+{
+    for(Connection* con: connections){
+        con->UpdateControl();
+    }
+}
+
+void Building::AddConnection(Connection* con){
+    connections.push_back(con);
+}

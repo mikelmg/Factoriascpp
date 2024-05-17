@@ -66,14 +66,13 @@ int main()
 
         BackgroundMesh::Draw(camera);
 
-        float upSize = 6* sin( clock()/150.0f  );
 
         // itemA1.Draw(upSize);
         // itemA2.Draw(upSize);
 
         worldMap.Update(GetFrameTime());
 
-        worldMap.Draw(upSize);
+        worldMap.Draw();
 
         //Linea comparacion items
         DrawRectangle(5, 58, SCREENWIDTH, 2, BLUE);

@@ -18,13 +18,14 @@ WorldMap::WorldMap(Camera2D* camera)
 
     this->camera = camera;
 
-    //PLACEHOLDER
-    connections.push_back(new Connection(world[0], world[1]));
+    addConnection();
+
 }
 
 
 void WorldMap::Update(float dt)
 {
+    upSize = 6* sin( clock()/150.0f  );
     //Move buildings
     Drag();
 
@@ -32,7 +33,7 @@ void WorldMap::Update(float dt)
     for(Connection* con: connections){
         
         spawnTimer += GetFrameTime();
-        if(spawnTimer >= 0.1){
+        if(spawnTimer >= 0.2){
             con->AddItem();
             spawnTimer=0;
         }
@@ -40,7 +41,7 @@ void WorldMap::Update(float dt)
     }
 }
 
-void WorldMap::Draw(float upSize)
+void WorldMap::Draw()
 {
     //Draw all buildings
     for(Selectable* building: world) {
@@ -55,20 +56,29 @@ void WorldMap::Draw(float upSize)
 
 void WorldMap::Drag()
 {
-    for(Selectable* building: world) {
+    for(Building* building: world) {
         
+        Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
         //Detecto si pincho edificio y actualizo su posición
         if( building->GetSelected() || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) &&
-            CheckCollisionPointRec(GetScreenToWorld2D(GetMousePosition(), *camera), 
+            CheckCollisionPointRec(mousePosition, 
                 Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE})) )
         {
             building->Selected();
             //Mouse pos needs corrections
-            building->SetPosition(Vector2SubtractValue(GetScreenToWorld2D(GetMousePosition(), *camera), BUILDING_SIZE/2));
+            building->UpdateConnections();
+            building->SetPosition(Vector2SubtractValue(mousePosition, BUILDING_SIZE/2));
         }
 
         if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
             building->NSelected();
     }
 
+}
+
+void WorldMap::addConnection(){
+    //TODO PLACEHOLDER, addconections to a given building, conn
+    connections.push_back(new Connection(world[0], world[1]));
+    world[0]->AddConnection(connections[0]);
+    world[1]->AddConnection(connections[0]);
 }

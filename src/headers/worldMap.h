@@ -18,16 +18,20 @@ public:
 
     // BackgroundMesh();
     void Update(float dt);
-    void Draw(float upSize);
+    void Draw();
     void Drag();
     //TODO add buildings
     //TODO add Connections
 private:
+
+    void addConnection();
     //2D vector of Selectables
-    vector<Selectable*> world;
+    vector<Building*> world;
     vector<Connection*> connections;
     Camera2D* camera;
     float spawnTimer;
+    float upSize;
+
     // map<pair<int,int>, Building*> world2;
 
     // vector<Conections> Conections;

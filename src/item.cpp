@@ -2,14 +2,11 @@
 
 Item::Item()
 {
-    position.x   = 100;
-    position.y = 100;
     color = {20, 160, 133, 255};
 }
 
-Item::Item(Vector2 position, ItemsType type)
+Item::Item(ItemsType type)
 {
-    this->position = position;
 
     this->type = type;
 
@@ -30,21 +27,8 @@ Item::Item(Vector2 position, ItemsType type)
     }
 }
 
-Vector2 Item::GetPosition(){
-    return position;
-}
 
-void Item::SetPosition(Vector2 newPosition)
+void Item::Draw(float upSize, Vector2 position)
 {
-    position = newPosition;
-}
-void Item::Update(float dt)
-{
-    // position.x += ITEM_VELOCITY*dt;
-
-}
-
-void Item::Draw(float upSize)
-{
-    DrawRectangle(position.x-upSize/2, position.y-upSize/2, 20+upSize, 20+upSize, color);
+    DrawRectangle(position.x-upSize/2-ITEM_SIZE/2, position.y-upSize/2-ITEM_SIZE/2, 15+upSize, 15+upSize, color);
 }

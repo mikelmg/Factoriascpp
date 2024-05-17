@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <vector>
 #include "selectable.h"
+#include "connection.h"
 
 
 static const std::vector<Color> LVLCOLORS = {
@@ -37,6 +38,8 @@ public:
     void Update(float dt);
     void Draw();
     Vector2 GetCenter();
+    void UpdateConnections();
+    void AddConnection(Connection* con);
     // Vector2 GetPosition();
     // void SetPosition(Vector2 position);
     // void Selected();
@@ -49,5 +52,6 @@ private:
 
     int level;
     Color color;
+    std::vector<Connection*> connections;
 
 };

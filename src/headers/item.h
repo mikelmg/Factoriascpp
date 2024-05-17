@@ -17,19 +17,15 @@ typedef enum {
     COBALT,
 }ItemsType;
 
+const int ITEM_SIZE =10;
+
 class Item //Declaration forward
 {
 public:
     Item();
-    Item(Vector2 position, ItemsType type);
-    Vector2 GetPosition();
-    void SetPosition(Vector2 newPosition);
-    void Selected();
-    void Update(float dt);
-    void Draw(float upSize);
+    Item(ItemsType type);
+    void Draw(float upSize, Vector2 position);
 protected:
-    Vector2 position;
-    bool selected;
     ItemsType type;
     Color color;
 };
