@@ -27,8 +27,9 @@ public:
     //TODO delete Connections
     //TODO Snap buildings to grid
 private:
+    int ConnectionExists(Building* buildingO, Building* buildingT);
+    void DeleteConnection(Building* buildingO, Building* buildingT, int i);
 
-    void addConnection();
     //2D vector of Selectables
     vector<Building*> world;
     vector<Connection*> connections;
@@ -39,5 +40,5 @@ private:
     // map<pair<int,int>, Building*> world2;
     Building* buildingConnSelected;
     bool conSelected;
-    // vector<Conections> Conections;
+    // vector<Connections> Connections;
 };

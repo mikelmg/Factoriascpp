@@ -39,7 +39,10 @@ public:
     void Draw();
     Vector2 GetCenter();
     void UpdateConnections();
-    void AddConnection(Connection* con);
+    void AddInConnection(Connection* con);
+    void AddOutConnection(Connection* con);
+    void DeleteInConnection(Connection* con);
+    void DeleteOutConnection(Connection* con);    
     // Vector2 GetPosition();
     // void SetPosition(Vector2 position);
     // void Selected();
@@ -52,6 +55,9 @@ private:
 
     int level;
     Color color;
-    std::vector<Connection*> connections;
+    //TODO Change to list of InConn and OutConn
+    std::vector<Connection*> inConnections;
+    std::vector<Connection*> outConnections;
+
 
 };

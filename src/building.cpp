@@ -1,5 +1,6 @@
 #include "headers/building.h"
 #include <raymath.h>
+#include <algorithm>
 
 Building::Building(){
 
@@ -33,11 +34,39 @@ Vector2 Building::GetCenter()
 
 void Building::UpdateConnections()
 {
-    for(Connection* con: connections){
+    for(Connection* con: inConnections){
+        con->UpdateControl();
+    }
+
+    for(Connection* con: outConnections){
         con->UpdateControl();
     }
 }
 
-void Building::AddConnection(Connection* con){
-    connections.push_back(con);
+void Building::AddInConnection(Connection* con){
+    inConnections.push_back(con);
+}
+
+void Building::AddOutConnection(Connection* con){
+    outConnections.push_back(con);
+}
+
+void Building::DeleteInConnection(Connection* con){
+    // Find the element in the vector
+    std::vector<Connection*>::iterator it = std::find(inConnections.begin(), inConnections.end(), con);
+
+    // If the element is found, erase it from the vector
+    if (it != inConnections.end()) {
+        inConnections.erase(it);
+    }
+}
+
+void Building::DeleteOutConnection(Connection* con){
+    // Find the element in the vector
+    std::vector<Connection*>::iterator it = std::find(outConnections.begin(), outConnections.end(), con);
+
+    // If the element is found, erase it from the vector
+    if (it != outConnections.end()) {
+        outConnections.erase(it);
+    }
 }

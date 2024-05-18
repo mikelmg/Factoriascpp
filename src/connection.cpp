@@ -68,3 +68,11 @@ void Connection::UpdateControl()
     controlO = {(origin->GetCenter().x + target->GetCenter().x)/2, origin->GetCenter().y};
     controlT = {(origin->GetCenter().x + target->GetCenter().x)/2, target->GetCenter().y };
 }
+
+Selectable* Connection::GetOrigin(){
+    return origin;
+}
+
+Selectable* Connection::GetTarget(){
+    return target;
+}

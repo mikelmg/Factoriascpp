@@ -20,6 +20,8 @@ public:
     void Draw(float upSize);
     void AddItem();
     void UpdateControl();
+    Selectable* GetOrigin();
+    Selectable* GetTarget();
 
 protected:
     Selectable* origin;

@@ -3,6 +3,7 @@
 #include <raymath.h>
 #include <math.h>
 #include <iostream>
+#include <algorithm>
 
 
 WorldMap::WorldMap()
@@ -37,7 +38,7 @@ void WorldMap::Update(float dt)
     for(Connection* con: connections){
         
         spawnTimer += GetFrameTime();
-        if(spawnTimer >= 0.2){
+        if(spawnTimer >= 0.4){
             con->AddItem();
             spawnTimer=0;
         }
@@ -83,8 +84,8 @@ void WorldMap::CheckNewBuildingSelected()
 
 void WorldMap::AddConnection(Building* BuildingO, Building* BuildingT){
     connections.push_back(new Connection(BuildingO,BuildingT));
-    BuildingO->AddConnection(connections.back());
-    BuildingT->AddConnection(connections.back());
+    BuildingO->AddOutConnection(connections.back());
+    BuildingT->AddInConnection(connections.back());
 }
 
 //Pos Random
@@ -108,26 +109,56 @@ void WorldMap::CheckNewConnection(){
             }
         }
     }
-    //If left/right button and Selected
+    //If left/right button and Selected -> Create/Cancel Connection 
     else if ((IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && conSelected){
         Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
         //Check every building
         for (Building* building: world){
+            //Building clicked -> Add/Delte conn
             if (CheckCollisionPointRec(mousePosition, 
                 Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE}))
-            {//Add new connection
-                AddConnection(buildingConnSelected, building);
-                conSelected = false;
-                break;
+            {//Check if conn already exists
+                int i = ConnectionExists(buildingConnSelected, building);
+                if(i==-1){//Add new connection   
+                    AddConnection(buildingConnSelected, building);
+                    conSelected = false;
+                    break;
+                }
+                else{//If a connection already exists -> delete it
+                    DeleteConnection(buildingConnSelected, building, i);
+                }
             }            
         }
-        //Outside any building
+        //Outside any building -> Cancel connection
         conSelected = false;
     }
-    //No button but connection selected
+    //No button but connection selected->Draw curve
     else if (conSelected){
         DrawLineBezier(buildingConnSelected->GetCenter(), GetScreenToWorld2D(GetMousePosition(), *camera), 4, RED );
     }
     
 
+}
+
+//Check if 2 buildings already have a conn
+int WorldMap::ConnectionExists(Building* buildingO, Building* buildingT){
+
+    //Exists
+    for (auto it = connections.begin(); it != connections.end(); ++it){
+        if((*it)->GetOrigin() == buildingO && (*it)->GetTarget() == buildingT){
+            return static_cast<int>(std::distance(connections.begin(), it)); 
+        }
+    }
+    //Element is not found
+    return -1;
+}
+
+//Delete conn, handle memory
+void WorldMap::DeleteConnection(Building* buildingO, Building* buildingT, int i){
+    delete connections[i];
+
+    buildingO->DeleteOutConnection(connections[i]);
+    buildingT->DeleteInConnection(connections[i]);
+
+    connections.erase(connections.begin()+i);
 }
