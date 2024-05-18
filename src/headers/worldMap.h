@@ -23,6 +23,7 @@ public:
     void AddConnection(Building* BuildingO, Building* BuildingT);
     void AddBuilding();
     void CheckNewConnection();
+    void CheckKeyboard();
     //TODO add/delete buildings
     //TODO delete Connections
     //TODO Snap buildings to grid

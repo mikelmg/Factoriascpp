@@ -33,6 +33,7 @@ void WorldMap::Update(float dt)
     //Move buildings
     CheckNewBuildingSelected();
     CheckNewConnection();
+    CheckKeyboard();
 
     //Update Items
     for(Connection* con: connections){
@@ -161,4 +162,10 @@ void WorldMap::DeleteConnection(Building* buildingO, Building* buildingT, int i)
     buildingT->DeleteInConnection(connections[i]);
 
     connections.erase(connections.begin()+i);
+}
+
+void WorldMap::CheckKeyboard(){
+    if(IsKeyPressed(KEY_B)){
+        AddBuilding();
+    }
 }
