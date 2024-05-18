@@ -29,7 +29,7 @@ void Connection::Update(float dt)
         //Actualiza la f en relacion a la curva Belzier
         items[i].first+=ITEM_SPEED*dt;
         //Actualiza su posicion 
-        //TODO maybe correct their f so it's not a proportion but an absolute distance traveled
+        //TODO correct their f so it's not a proportion but an absolute distance traveled (stop items when selected, delete if moved too close)
         //If reached -> delete
         if(items[i].first > 1){
             delete items[i].second;

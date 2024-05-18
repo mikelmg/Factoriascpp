@@ -22,6 +22,7 @@
             },
             "osx": {
                 "args": [
+                    "/MDd", // Use /MDd or /MTd to define _DEBUG and allow _CrtDumpMemoryLeaks()
                     "PROJECT_NAME=${fileBasenameNoExtension}",
                     "OBJS=src/*.cpp",
                     "BUILD_MODE=DEBUG"

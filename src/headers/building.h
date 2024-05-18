@@ -43,11 +43,7 @@ public:
     void AddOutConnection(Connection* con);
     void DeleteInConnection(Connection* con);
     void DeleteOutConnection(Connection* con);    
-    // Vector2 GetPosition();
-    // void SetPosition(Vector2 position);
-    // void Selected();
-    // void NSelected();
-    // bool GetSelected();
+    //TODO Make Buildings create Items at speed proportinal to their lvl
 
 private:
     // Vector2 position;
@@ -55,7 +51,6 @@ private:
 
     int level;
     Color color;
-    //TODO Change to list of InConn and OutConn
     std::vector<Connection*> inConnections;
     std::vector<Connection*> outConnections;
 

@@ -49,6 +49,7 @@ void WorldMap::Update(float dt)
 
 void WorldMap::Draw()
 {
+    DrawText("B for new Building", 200, 80, 30, RED);
     //Draw all buildings
     for(Selectable* building: world) {
         building->Draw();
@@ -58,6 +59,8 @@ void WorldMap::Draw()
     for(Connection* con: connections){
         con->Draw(upSize);
     }
+
+    
 }
 
 void WorldMap::CheckNewBuildingSelected()
