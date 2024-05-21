@@ -8,6 +8,10 @@
 const int ITEM_VELOCITY = 70;
 const float ITEM_SPEED = 0.2f;
 
+struct ItemsPosition{
+    float position;
+    Item* item;
+};
 
 class Connection //Declaration forward
 {
@@ -26,8 +30,9 @@ public:
 protected:
     Selectable* origin;
     Selectable* target;
-    std::deque<std::pair<float, Item*>> items;
+    std::deque<ItemsPosition> items;
     bool selected;
     ItemsType type;
     Vector2 controlO, controlT;
+    //TODO: Connections must be able to stuck if endpoint at max capacity
 };

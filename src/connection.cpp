@@ -27,12 +27,12 @@ void Connection::Update(float dt)
     //Calculate their new pos in the curve and actualice it
     for (int i = 0; i < items.size(); ++i) {
         //Actualiza la f en relacion a la curva Belzier
-        items[i].first+=ITEM_SPEED*dt;
+        items[i].position+=ITEM_SPEED*dt;
         //Actualiza su posicion 
         //TODO correct their f so it's not a proportion but an absolute distance traveled (stop items when selected, delete if moved too close)
         //If reached -> delete
-        if(items[i].first > 1){
-            delete items[i].second;
+        if(items[i].position > 1){
+            delete items[i].item;
             items.pop_back(); 
         }
     }
@@ -48,8 +48,8 @@ void Connection::Draw(float upSize)
 
     //Draw Items
     for (int i = 0; i < items.size(); ++i) {
-        items[i].second->Draw(upSize, GetSplinePointBezierCubic(origin->GetCenter(), controlO, controlT,
-            target->GetCenter(), items[i].first));
+        items[i].item->Draw(upSize, GetSplinePointBezierCubic(origin->GetCenter(), controlO, controlT,
+            target->GetCenter(), items[i].position));
     }
 
 }
@@ -58,7 +58,7 @@ void Connection::AddItem()
 {
     //TODO add any kind of Item
     #define item new Item(COBALT)
-    #define pairItem std::pair<float, Item*> (0,item)
+    #define pairItem ItemsPosition {0,item}
     //Add par f, Item to the list
     items.push_front(pairItem);
 }

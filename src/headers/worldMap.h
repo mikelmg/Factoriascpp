@@ -25,7 +25,7 @@ public:
     void CheckNewConnection();
     void CheckKeyboard();
     //TODO add/delete buildings
-    //TODO delete Connections
+    //TODO phantom building when add
     //TODO Snap buildings to grid
 private:
     int ConnectionExists(Building* buildingO, Building* buildingT);

@@ -2,6 +2,9 @@
 #include <raymath.h>
 #include <algorithm>
 
+
+
+
 Building::Building(){
 
     position.x = 20;
@@ -69,4 +72,7 @@ void Building::DeleteOutConnection(Connection* con){
     if (it != outConnections.end()) {
         outConnections.erase(it);
     }
+
+    inventary.inventary[0];
 }
+

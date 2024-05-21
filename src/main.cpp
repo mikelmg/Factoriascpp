@@ -23,7 +23,6 @@ int main()
 
     WorldMap worldMap = WorldMap(&camera);
 
-
     while (!WindowShouldClose())
     {
 

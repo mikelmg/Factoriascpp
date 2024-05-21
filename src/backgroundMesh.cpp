@@ -6,7 +6,7 @@
 
 
 
-
+//TODO max transparency
 void BackgroundMesh::Draw(Camera2D camera){
     for (int x = -MESH_SIZE_WIDTH/2; x < MESH_SIZE_WIDTH/2; x += MESH_DISTANCE){
         //Needs static cast to unsigned char for some reason
