@@ -39,10 +39,12 @@ void Building::UpdateConnections()
 {
     for(Connection* con: inConnections){
         con->UpdateControl();
+        con->UpdateBezierLength();
     }
 
     for(Connection* con: outConnections){
         con->UpdateControl();
+        con->UpdateBezierLength();
     }
 }
 
@@ -73,6 +75,6 @@ void Building::DeleteOutConnection(Connection* con){
         outConnections.erase(it);
     }
 
-    inventary.inventary[0];
+    // inventary.inventary[0];
 }
 

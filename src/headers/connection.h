@@ -6,7 +6,7 @@
 #include "item.h"
 
 const int ITEM_VELOCITY = 70;
-const float ITEM_SPEED = 0.2f;
+const float ITEM_SPEED = 120.f;
 
 struct ItemsPosition{
     float position;
@@ -26,6 +26,8 @@ public:
     void UpdateControl();
     Selectable* GetOrigin();
     Selectable* GetTarget();
+    void UpdateBezierLength();
+
 
 protected:
     Selectable* origin;
@@ -34,5 +36,7 @@ protected:
     bool selected;
     ItemsType type;
     Vector2 controlO, controlT;
+    float length;
+
     //TODO: Connections must be able to stuck if endpoint at max capacity
 };

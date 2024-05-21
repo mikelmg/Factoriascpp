@@ -2,7 +2,7 @@
 #include <raymath.h>
 
 #define middle Vector2Lerp(origin->GetCenter(), target->GetCenter(), 0.5)
-
+#define NUM_SEGMENTS_BEZIER 100
 
 Connection::Connection(Selectable *origin, Selectable *target)
 {
@@ -12,6 +12,8 @@ Connection::Connection(Selectable *origin, Selectable *target)
     //Calculate control points of the curve
     controlO = {(origin->GetCenter().x + target->GetCenter().x)/2, origin->GetCenter().y};
     controlT = {(origin->GetCenter().x + target->GetCenter().x)/2, target->GetCenter().y };
+
+    UpdateBezierLength();
 }
 
 void Connection::Selected()
@@ -29,9 +31,8 @@ void Connection::Update(float dt)
         //Actualiza la f en relacion a la curva Belzier
         items[i].position+=ITEM_SPEED*dt;
         //Actualiza su posicion 
-        //TODO correct their f so it's not a proportion but an absolute distance traveled (stop items when selected, delete if moved too close)
         //If reached -> delete
-        if(items[i].position > 1){
+        if(items[i].position >= length){
             delete items[i].item;
             items.pop_back(); 
         }
@@ -49,7 +50,7 @@ void Connection::Draw(float upSize)
     //Draw Items
     for (int i = 0; i < items.size(); ++i) {
         items[i].item->Draw(upSize, GetSplinePointBezierCubic(origin->GetCenter(), controlO, controlT,
-            target->GetCenter(), items[i].position));
+            target->GetCenter(), items[i].position/length));
     }
 
 }
@@ -75,4 +76,20 @@ Selectable* Connection::GetOrigin(){
 
 Selectable* Connection::GetTarget(){
     return target;
+}
+
+// Función para calcular la longitud total de la curva de Bézier cúbica
+void Connection::UpdateBezierLength() {
+    length = 0.0f;
+    Vector2 prevPoint = origin->GetCenter();
+
+    // Dividir la curva en numSegments segmentos y sumar las longitudes de estos segmentos
+    for (int i = 1; i <= NUM_SEGMENTS_BEZIER; i++) {
+        float t = (float)i / (float)NUM_SEGMENTS_BEZIER; // Calcular t para el segmento actual
+        Vector2 point = GetSplinePointBezierCubic(target->GetCenter(), controlO, controlT,
+            target->GetCenter(), t); // Obtener el punto en la curva
+        // Calcular la distancia entre el punto actual y el punto anterior
+        length += sqrtf((point.x - prevPoint.x) * (point.x - prevPoint.x) + (point.y - prevPoint.y) * (point.y - prevPoint.y));
+        prevPoint = point; // Actualizar el punto anterior
+    }
 }
