@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include "selectable.h"
 #include "connection.h"
 
@@ -75,15 +76,6 @@ static const int BUILDING_SIZE = 40;
 
 class Building: public Selectable //Declaration forward
 {
-
-
-    struct InventaryPerItem{
-        ItemsType type;
-        int amount;
-    };
-
-
-
 public:
     Building();
     Building(int x, int y, int level);
@@ -95,8 +87,9 @@ public:
     void AddOutConnection(Connection* con);
     void DeleteInConnection(Connection* con);
     void DeleteOutConnection(Connection* con); 
-    void Production();
-    void AddItemsToConnection(Connection* con, ItemsPosition itemsPositions);
+    void Production(const float &dt);
+    void AddItemsToConnection(Connection* con, float positions);
+    void AddItemsToInventary(ItemsType type, int amount);
 
 
     //TODO Make Buildings create Items at speed proportinal to their lvl
@@ -109,8 +102,8 @@ private:
     Color color;
     std::vector<Connection*> inConnections;
     std::vector<Connection*> outConnections;
-    std::vector<InventaryPerItem> inventary;
-    //TODO Implement inventary
+    std::unordered_map<ItemsType, int> inventary;
+    float spawnTimer;
     
 
 };

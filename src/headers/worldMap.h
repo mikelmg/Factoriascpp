@@ -35,7 +35,6 @@ private:
     vector<Building*> world;
     vector<Connection*> connections;
     Camera2D* camera;
-    float spawnTimer;
     float upSize;
 
     // map<pair<int,int>, Building*> world2;

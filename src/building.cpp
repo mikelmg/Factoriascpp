@@ -2,8 +2,8 @@
 #include <raymath.h>
 #include <algorithm>
 
-
-
+//FIXME change to recipe
+#define OUTPUT_FREQUENCY 0.4
 
 Building::Building(){
 
@@ -22,6 +22,25 @@ Building::Building(int x, int y, int level){
 
     this->level = level;
     this->color = LVLCOLORS[level];
+
+    spawnTimer = 0;
+}
+
+void Building::Production(const float &dt){
+
+    //TODO Implement Recipes
+        
+    spawnTimer += dt;
+    int amountProduced = spawnTimer / OUTPUT_FREQUENCY;
+
+    if(spawnTimer >= OUTPUT_FREQUENCY){
+        for(Connection* con: outConnections){//Every Conn
+            for(int i = 1; i <= amountProduced; i++)//In case of lag
+                con->AddItem(spawnTimer-OUTPUT_FREQUENCY*i);
+        }
+        spawnTimer=0;
+    }
+
 }
 
 
@@ -76,5 +95,14 @@ void Building::DeleteOutConnection(Connection* con){
     }
 
     // inventary.inventary[0];
+}
+
+
+void Building::AddItemsToConnection(Connection* con, float position){
+    con->AddItem(position);
+}
+
+void Building::AddItemsToInventary(ItemsType type, int amount){
+    inventary[type]+=amount;
 }
 

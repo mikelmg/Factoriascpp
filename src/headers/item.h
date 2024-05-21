@@ -24,8 +24,7 @@ class Item //Declaration forward
 public:
     Item();
     Item(ItemsType type);
-    void Draw(float upSize, Vector2 position);
+    static void Draw(float upSize, Vector2 position, ItemsType type);
 protected:
     ItemsType type;
-    Color color;
 };

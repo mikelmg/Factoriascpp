@@ -35,16 +35,13 @@ void WorldMap::Update(float dt)
     CheckNewConnection();
     CheckKeyboard();
 
-    //Update Items
-    for(Connection* con: connections){
-        
-        spawnTimer += GetFrameTime();
-        if(spawnTimer >= 0.4){
-            con->AddItem();
-            spawnTimer=0;
-        }
+    //Update Buildings
+    for (Building* sel: world)
+        sel->Production(dt);
+
+    //Update Connections
+    for(Connection* con: connections)
         con->Update(dt);
-    }
 }
 
 void WorldMap::Draw()
@@ -94,7 +91,7 @@ void WorldMap::AddConnection(Building* BuildingO, Building* BuildingT){
 
 //Pos Random
 void WorldMap::AddBuilding(){
-    world.push_back(new Building(100* GetRandomValue(0, 10), 100* GetRandomValue(0, 10), 5));
+    world.push_back(new Building(50* GetRandomValue(0, 10), 50* GetRandomValue(0, 10), 5));
 }
 
 

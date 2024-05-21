@@ -2,13 +2,20 @@
 
 Item::Item()
 {
-    color = {20, 160, 133, 255};
 }
 
 Item::Item(ItemsType type)
 {
 
     this->type = type;
+
+
+}
+
+
+void Item::Draw(float upSize, Vector2 position, ItemsType type)
+{
+    Color color;
 
     switch (type)
     {
@@ -25,10 +32,6 @@ Item::Item(ItemsType type)
         break;
 
     }
-}
 
-
-void Item::Draw(float upSize, Vector2 position)
-{
     DrawRectangle(position.x-upSize/2-ITEM_SIZE/2, position.y-upSize/2-ITEM_SIZE/2, 15+upSize, 15+upSize, color);
 }

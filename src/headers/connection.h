@@ -8,10 +8,6 @@
 const int ITEM_VELOCITY = 70;
 const float ITEM_SPEED = 120.f;
 
-struct ItemsPosition{
-    float position;
-    Item* item;
-};
 
 class Connection //Declaration forward
 {
@@ -23,6 +19,7 @@ public:
     void Update(float dt);
     void Draw(float upSize);
     void AddItem();
+    void AddItem(float position);
     void UpdateControl();
     Selectable* GetOrigin();
     Selectable* GetTarget();
@@ -32,7 +29,7 @@ public:
 protected:
     Selectable* origin;
     Selectable* target;
-    std::deque<ItemsPosition> items;
+    std::deque<float> items;
     bool selected;
     ItemsType type;
     Vector2 controlO, controlT;

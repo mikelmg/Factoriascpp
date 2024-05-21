@@ -13,6 +13,8 @@ Connection::Connection(Selectable *origin, Selectable *target)
     controlO = {(origin->GetCenter().x + target->GetCenter().x)/2, origin->GetCenter().y};
     controlT = {(origin->GetCenter().x + target->GetCenter().x)/2, target->GetCenter().y };
 
+    type = COBALT;//TODO Type should be able to change
+
     UpdateBezierLength();
 }
 
@@ -29,11 +31,10 @@ void Connection::Update(float dt)
     //Calculate their new pos in the curve and actualice it
     for (int i = 0; i < items.size(); ++i) {
         //Actualiza la f en relacion a la curva Belzier
-        items[i].position+=ITEM_SPEED*dt;
+        items[i]+=ITEM_SPEED*dt;
         //Actualiza su posicion 
         //If reached -> delete
-        if(items[i].position >= length){
-            delete items[i].item;
+        if(items[i] >= length){
             items.pop_back(); 
         }
     }
@@ -49,19 +50,22 @@ void Connection::Draw(float upSize)
 
     //Draw Items
     for (int i = 0; i < items.size(); ++i) {
-        items[i].item->Draw(upSize, GetSplinePointBezierCubic(origin->GetCenter(), controlO, controlT,
-            target->GetCenter(), items[i].position/length));
+        Item::Draw(upSize, GetSplinePointBezierCubic(origin->GetCenter(), controlO, controlT,
+            target->GetCenter(), items[i]/length),type);
     }
 
 }
 
 void Connection::AddItem()
 {
-    //TODO add any kind of Item
-    #define item new Item(COBALT)
-    #define pairItem ItemsPosition {0,item}
     //Add par f, Item to the list
-    items.push_front(pairItem);
+    items.push_front(0);
+}
+
+void Connection::AddItem(float position)
+{
+    //Add par f, Item to the list
+    items.push_front(position);
 }
 
 void Connection::UpdateControl()
