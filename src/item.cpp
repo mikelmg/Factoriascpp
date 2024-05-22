@@ -33,5 +33,5 @@ void Item::Draw(float upSize, Vector2 position, ItemsType type)
 
     }
 
-    DrawRectangle(position.x-upSize/2-ITEM_SIZE/2, position.y-upSize/2-ITEM_SIZE/2, 15+upSize, 15+upSize, color);
+    DrawRectangle(position.x-upSize/2-ITEM_SIZE/2, position.y-upSize/2-ITEM_SIZE/2, ITEM_SIZE+upSize, ITEM_SIZE+upSize, color);
 }

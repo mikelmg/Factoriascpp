@@ -36,7 +36,7 @@ void Building::Production(const float &dt){
     if(spawnTimer >= OUTPUT_FREQUENCY){
         for(Connection* con: outConnections){//Every Conn
             for(int i = 1; i <= amountProduced; i++)//In case of lag
-                con->AddItem(spawnTimer-OUTPUT_FREQUENCY*i);
+                con->AddItem(spawnTimer-OUTPUT_FREQUENCY*i);//Is this order right?
         }
         spawnTimer=0;
     }

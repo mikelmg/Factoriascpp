@@ -9,9 +9,11 @@
 #include "connection.h"
 
 #define PRODUCTION_LEVELS_FILE "src/Resources/facts - Import.csv"
+#define MAX_ITEM_UPSCALE 5
+#define ITEM_UPSCALE_CYCLE_RATE 150.0F
 
 struct ProductionLevels{
-    int level;
+    int stack;
     float production;
 
     static std::vector<ProductionLevels> ReadLvlFile(const std::string& filename) {
@@ -29,7 +31,7 @@ struct ProductionLevels{
                 level.production = std::stof(line);
 
                 getline(file, line);
-                level.level = std::stoi(line);
+                level.stack = std::stoi(line);
 
                 productionLevels.push_back(level);
             }
@@ -38,7 +40,7 @@ struct ProductionLevels{
         file.close();
 
         for (const auto& aux : productionLevels) {
-            std::cout << "Float Level: " << aux.production << ", Integer Level: " << aux.level << std::endl;
+            std::cout << "Float Level: " << aux.production << ", Integer Level: " << aux.stack << std::endl;
         }
         return productionLevels;
     }
@@ -90,7 +92,6 @@ public:
     void Production(const float &dt);
     void AddItemsToConnection(Connection* con, float positions);
     void AddItemsToInventary(ItemsType type, int amount);
-
 
     //TODO Make Buildings create Items at speed proportinal to their lvl
 

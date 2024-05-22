@@ -29,7 +29,7 @@ WorldMap::WorldMap(Camera2D* camera)
 
 void WorldMap::Update(float dt)
 {
-    upSize = 6* sin( clock()/150.0f  );
+    upSize = MAX_ITEM_UPSCALE* sin( clock()/ITEM_UPSCALE_CYCLE_RATE  );
     //Move buildings
     CheckNewBuildingSelected();
     CheckNewConnection();
