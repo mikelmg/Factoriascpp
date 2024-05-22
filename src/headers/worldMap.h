@@ -3,6 +3,7 @@
 #include "selectable.h"
 #include "item.h"
 #include "building.h"
+#include "connection.h"
 #include <raylib.h>
 #include <vector>
 #include <map>
@@ -13,15 +14,31 @@ class WorldMap //Declaration forward
 {
 public:
     WorldMap();
+    WorldMap(Camera2D* camera);
+
     // BackgroundMesh();
-    void Update();
+    void Update(float dt);
     void Draw();
-    void Drag(Camera2D camera);
-
+    void CheckNewBuildingSelected();
+    void AddConnection(Building* BuildingO, Building* BuildingT);
+    void AddBuilding();
+    void CheckNewConnection();
+    void CheckKeyboard();
+    //TODO add/delete buildings
+    //TODO phantom building when add
+    //TODO Snap buildings to grid
 private:
-    //2D vector of Selectables
-    vector<Selectable*> world;
-    // map<pair<int,int>, Building*> world2;
+    int ConnectionExists(Building* buildingO, Building* buildingT);
+    void DeleteConnection(Building* buildingO, Building* buildingT, int i);
 
-    // vector<Conections> Conections;
+    //2D vector of Selectables
+    vector<Building*> world;
+    vector<Connection*> connections;
+    Camera2D* camera;
+    float upSize;
+
+    // map<pair<int,int>, Building*> world2;
+    Building* buildingConnSelected;
+    bool conSelected;
+    // vector<Connections> Connections;
 };

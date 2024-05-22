@@ -1,32 +1,37 @@
 #include "headers/item.h"
 
-
 Item::Item()
 {
-    position.x   = 100;
-    position.y = 100;
-    color = {20, 160, 133, 255};
 }
 
-Item::Item(int x, int y, Color color)
+Item::Item(ItemsType type)
 {
-    position.x = x;
-    position.y = y;
 
-    this->color = color;
-}
+    this->type = type;
 
-Vector2 Item::GetPosition(){
-    return position;
+
 }
 
 
-void Item::Update(float dt)
+void Item::Draw(float upSize, Vector2 position, ItemsType type)
 {
-    position.x += ITEM_VELOCITY*dt;
-}
+    Color color;
 
-void Item::Draw(float upSize)
-{
-    DrawRectangle(position.x-upSize/2, position.y-upSize/2, 20+upSize, 20+upSize, color);
+    switch (type)
+    {
+    case IRON:
+        color = GRAY;
+        break;
+    
+    case COPPER:
+        color = ORANGE;
+        break;
+
+    case COBALT:
+        color = BLUE;
+        break;
+
+    }
+
+    DrawRectangle(position.x-upSize/2-ITEM_SIZE/2, position.y-upSize/2-ITEM_SIZE/2, ITEM_SIZE+upSize, ITEM_SIZE+upSize, color);
 }
