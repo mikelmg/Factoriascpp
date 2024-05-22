@@ -24,7 +24,7 @@ public:
     void AddBuilding();
     void CheckNewConnection();
     void CheckKeyboard();
-    //TODO add/delete buildings
+    //TODO delete buildings
     //TODO phantom building when add
     //TODO Snap buildings to grid
 private:

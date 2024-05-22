@@ -98,7 +98,6 @@ void WorldMap::AddBuilding(){
 void WorldMap::CheckNewConnection(){
     //If right button but not selected
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !conSelected){
-        //Coordinates of mouse
         Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
         //Check every building for that coordinates
         for (Building* building: world){
