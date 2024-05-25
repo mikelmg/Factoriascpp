@@ -1,3 +1,7 @@
+//Miguel Mora Gómez
+// Use PS C:\Code\Factoriascpp\src> g++ -o MyRaylibGame.exe main.cpp backgroundMesh.cpp building.cpp connection.cpp item.cpp mouseController.cpp selectable.cpp worldMap.cpp -IC:/raylib/raylib/src -LC:/raylib/raylib/src -lraylib -lopengl32 -lgdi32 
+// to compile
+
 #include "headers/item.h"
 #include "headers/Building.h"
 #include "headers/backgroundMesh.h"
