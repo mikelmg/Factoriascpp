@@ -13,6 +13,8 @@ public:
     bool GetSelected();
     virtual void Draw() = 0;
     virtual Vector2 GetCenter() = 0;
+    void CenterPosition();
+
 
 protected:
     Vector2 selectedPosition;

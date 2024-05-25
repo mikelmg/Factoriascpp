@@ -7,6 +7,7 @@
 #include "headers/backgroundMesh.h"
 #include "headers/globalParam.h"
 #include "headers/worldMap.h"
+#include "headers/controller.h"
 #include <raylib.h>
 #include <ctime>
 #include <math.h>
@@ -25,7 +26,8 @@ int main()
     Camera2D camera = { 0 };
     camera.zoom = 1.0f;
 
-    WorldMap worldMap = WorldMap(&camera);
+    WorldMap* worldMap = new WorldMap(&camera);
+    Controller controller = Controller(&camera);
 
     while (!WindowShouldClose())
     {
@@ -72,10 +74,11 @@ int main()
 
         // itemA1.Draw(upSize);
         // itemA2.Draw(upSize);
+    
+        controller.Update(worldMap);
+        worldMap->Update(GetFrameTime());
 
-        worldMap.Update(GetFrameTime());
-
-        worldMap.Draw();
+        worldMap->Draw();
 
         //Linea comparacion items
         DrawRectangle(5, 58, SCREENWIDTH, 2, BLUE);

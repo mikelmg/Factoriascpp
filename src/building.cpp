@@ -24,6 +24,7 @@ Building::Building(int x, int y, int level){
     this->color = LVLCOLORS[level];
 
     spawnTimer = 0;
+    selected = false;
 }
 
 void Building::Production(const float &dt){
@@ -105,4 +106,8 @@ void Building::AddItemsToConnection(Connection* con, float position){
 void Building::AddItemsToInventary(ItemsType type, int amount){
     inventary[type]+=amount;
 }
+
+
+
+
 

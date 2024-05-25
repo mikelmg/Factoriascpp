@@ -30,10 +30,6 @@ WorldMap::WorldMap(Camera2D* camera)
 void WorldMap::Update(float dt)
 {
     upSize = MAX_ITEM_UPSCALE* sin( clock()/ITEM_UPSCALE_CYCLE_RATE  );
-    //Move buildings
-    CheckNewBuildingSelected();
-    CheckNewConnection();
-    CheckKeyboard();
 
     //Update Buildings
     for (Building* sel: world)
@@ -60,28 +56,6 @@ void WorldMap::Draw()
     
 }
 
-void WorldMap::CheckNewBuildingSelected()
-{
-    for(Building* building: world) {
-        
-        Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
-        //Detecto si pincho edificio y actualizo su posición
-        if( building->GetSelected() || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) &&
-            CheckCollisionPointRec(mousePosition, 
-                Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE})) )
-        {
-            building->Selected();
-            //Mouse pos needs corrections
-            building->UpdateConnections();
-            building->SetPosition(Vector2SubtractValue(mousePosition, BUILDING_SIZE/2));
-        }
-
-        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-            building->NSelected();
-    }
-
-}
-
 
 void WorldMap::AddConnection(Building* BuildingO, Building* BuildingT){
     connections.push_back(new Connection(BuildingO,BuildingT));
@@ -91,54 +65,9 @@ void WorldMap::AddConnection(Building* BuildingO, Building* BuildingT){
 
 //Pos Random
 void WorldMap::AddBuilding(){
-    world.push_back(new Building(50* GetRandomValue(0, 10), 50* GetRandomValue(0, 10), 5));
+    world.push_back(new Building(50* GetRandomValue(0, 10), 50* GetRandomValue(0, 10), 1));
 }
 
-
-void WorldMap::CheckNewConnection(){
-    //If right button but not selected
-    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !conSelected){
-        Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
-        //Check every building for that coordinates
-        for (Building* building: world){
-            if (CheckCollisionPointRec(mousePosition, 
-                Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE}))
-            {
-                conSelected = true;
-                buildingConnSelected = building;
-            }
-        }
-    }
-    //If left/right button and Selected -> Create/Cancel Connection 
-    else if ((IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && conSelected){
-        Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), *camera);
-        //Check every building
-        for (Building* building: world){
-            //Building clicked -> Add/Delte conn
-            if (CheckCollisionPointRec(mousePosition, 
-                Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE}))
-            {//Check if conn already exists
-                int i = ConnectionExists(buildingConnSelected, building);
-                if(i==-1){//Add new connection   
-                    AddConnection(buildingConnSelected, building);
-                    conSelected = false;
-                    break;
-                }
-                else{//If a connection already exists -> delete it
-                    DeleteConnection(buildingConnSelected, building, i);
-                }
-            }            
-        }
-        //Outside any building -> Cancel connection
-        conSelected = false;
-    }
-    //No button but connection selected->Draw curve
-    else if (conSelected){
-        DrawLineBezier(buildingConnSelected->GetCenter(), GetScreenToWorld2D(GetMousePosition(), *camera), 4, RED );
-    }
-    
-
-}
 
 //Check if 2 buildings already have a conn
 int WorldMap::ConnectionExists(Building* buildingO, Building* buildingT){
@@ -163,8 +92,10 @@ void WorldMap::DeleteConnection(Building* buildingO, Building* buildingT, int i)
     connections.erase(connections.begin()+i);
 }
 
-void WorldMap::CheckKeyboard(){
-    if(IsKeyPressed(KEY_B)){
-        AddBuilding();
-    }
+WorldMap* WorldMap::GetWorldMap(){
+    return this;
+}
+
+vector<Building*> WorldMap::GetBuildings(){
+    return world;
 }

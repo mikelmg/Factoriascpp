@@ -19,24 +19,25 @@ public:
     // BackgroundMesh();
     void Update(float dt);
     void Draw();
-    void CheckNewBuildingSelected();
+    // void CheckNewBuildingSelected();
     void AddConnection(Building* BuildingO, Building* BuildingT);
     void AddBuilding();
-    void CheckNewConnection();
-    void CheckKeyboard();
-    //TODO delete buildings
-    //TODO phantom building when add
-    //TODO Snap buildings to grid
-private:
+    // void CheckKeyboard();
+    WorldMap* GetWorldMap();
+    vector<Building*> GetBuildings();
     int ConnectionExists(Building* buildingO, Building* buildingT);
     void DeleteConnection(Building* buildingO, Building* buildingT, int i);
 
+
+    //TODO delete buildings
+    //TODO phantom building when add
+private:
+
     //2D vector of Selectables
-    vector<Building*> world;
     vector<Connection*> connections;
     Camera2D* camera;
     float upSize;
-
+    vector<Building*> world;
     // map<pair<int,int>, Building*> world2;
     Building* buildingConnSelected;
     bool conSelected;

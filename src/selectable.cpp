@@ -1,4 +1,6 @@
 #include "headers/selectable.h"
+#include "headers/backgroundMesh.h"
+#include <cmath> // Include this header for fmod
 
 Vector2 Selectable::GetPosition(){
     return position;
@@ -19,4 +21,9 @@ void Selectable::NSelected(){
 
 bool Selectable::GetSelected(){
     return selected; 
+}
+
+void Selectable::CenterPosition(){
+    position.x = std::round(position.x / MESH_DISTANCE) * MESH_DISTANCE;
+    position.y = std::round(position.y / MESH_DISTANCE) * MESH_DISTANCE;
 }
