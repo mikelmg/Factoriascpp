@@ -45,3 +45,11 @@ Color Selectable::ApplyBlueFilter(Color originalColor){
 }
 
 
+void Selectable::StoreInitialPosition(){
+    selectedPosition = position;
+}
+
+
+Vector2 Selectable::GetSelectedPosition(){
+    return selectedPosition;
+}

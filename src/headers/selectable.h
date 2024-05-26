@@ -16,6 +16,8 @@ public:
     virtual Vector2 GetCenter() = 0;
     void CenterPosition();
     static Color ApplyBlueFilter(Color originalColor);
+    void StoreInitialPosition();
+    Vector2 GetSelectedPosition();
 
 protected:
     Vector2 selectedPosition;

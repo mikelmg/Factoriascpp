@@ -10,18 +10,23 @@ public:
     void UpdateMousePosition();
     void Update(WorldMap* &worldMap);
     void CheckKeyboard(WorldMap* &worldMap);
-    void CheckNewBuildingSelected(WorldMap* &worldMap);
+    void CheckLeftClick(WorldMap* &worldMap);
     void CheckNewConnection(WorldMap* &worldMap);
     void DrawSelectionRectangle();
-    void SelectArea();
+    bool SelectArea(WorldMap* &worldMap);
 
 private:
     Camera2D* camera;
     Vector2 mousePosition;
     Building* buildingConnSelected;
+    std::vector <Building*> selectedBuildingsVector;
     Building* selectedBuilding;
     Vector2 areaSelectionOriginPoint;
+    Vector2 mouseOriginalPosition;
+    Vector2 offset;
     bool buildingSelected;
     bool conSelected;
+    bool areaPreSelected;
     bool areaSelected;
+
 };

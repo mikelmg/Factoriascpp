@@ -89,7 +89,7 @@ public:
     void Production(const float &dt);
     void AddItemsToConnection(Connection* con, float positions);
     void AddItemsToInventary(ItemsType type, int amount);
-
+    Rectangle GetRectangle();
 
     //TODO Make Buildings create Items at speed proportinal to their lvl
 

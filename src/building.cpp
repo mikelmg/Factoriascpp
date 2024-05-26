@@ -119,6 +119,10 @@ void Building::DrawSelection(){
 }
 
 
+Rectangle Building::GetRectangle(){
+    return Rectangle{position.x, position.y, BUILDING_SIZE, BUILDING_SIZE};
+}
+
 
 
 

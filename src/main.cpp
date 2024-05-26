@@ -21,7 +21,7 @@ int main()
 {
 
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "Factores!");
-    // SetTargetFPS(60);
+    SetTargetFPS(60);
 
     Camera2D camera = { 0 };
     camera.zoom = 1.0f;

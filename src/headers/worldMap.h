@@ -37,7 +37,6 @@ private:
     float upSize;
     vector<Building*> world;
     // map<pair<int,int>, Building*> world2;
-    Building* buildingConnSelected;
     bool conSelected;
     // vector<Connections> Connections;
 };
