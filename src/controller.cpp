@@ -22,6 +22,7 @@ void Controller::Update(WorldMap* &worldMap){
     CheckNewConnection(worldMap);
 }
 
+//TODO Simplify this
 void Controller::CheckLeftClick(WorldMap* &worldMap)
 {
     if(IsMouseButtonDown(MOUSE_LEFT_BUTTON) ){
