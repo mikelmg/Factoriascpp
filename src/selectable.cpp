@@ -27,3 +27,21 @@ void Selectable::CenterPosition(){
     position.x = std::round(position.x / MESH_DISTANCE) * MESH_DISTANCE;
     position.y = std::round(position.y / MESH_DISTANCE) * MESH_DISTANCE;
 }
+
+
+Color Selectable::ApplyBlueFilter(Color originalColor){
+    Color blueFilteredColor;
+    blueFilteredColor.r = originalColor.r * 0.5;  
+    blueFilteredColor.g = originalColor.g * 0.5;  
+    blueFilteredColor.b = originalColor.b * 3.0;  
+    
+    if (blueFilteredColor.r > 255) blueFilteredColor.r = 255;
+    if (blueFilteredColor.g > 255) blueFilteredColor.g = 255;
+    if (blueFilteredColor.b > 255) blueFilteredColor.b = 255;
+    
+    blueFilteredColor.a = originalColor.a;  
+    
+    return blueFilteredColor;
+}
+
+

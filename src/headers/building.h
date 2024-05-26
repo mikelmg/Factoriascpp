@@ -47,13 +47,9 @@ struct ProductionLevels{
 } ;
 static const std::vector<ProductionLevels> PRODUCTION_LVLS = ProductionLevels::ReadLvlFile(PRODUCTION_LEVELS_FILE);
 
-
-
 static const std::vector<Color> LVLCOLORS = {
-    RAYWHITE,
     BEIGE,
     WHITE,
-    BLACK,
     BROWN,
     RED,
     ORANGE,
@@ -83,6 +79,7 @@ public:
     Building(int x, int y, int level);
     void Update(float dt);
     void Draw();
+    void DrawSelection();
     Vector2 GetCenter();
     void UpdateConnections();
     void AddInConnection(Connection* con);
@@ -92,6 +89,7 @@ public:
     void Production(const float &dt);
     void AddItemsToConnection(Connection* con, float positions);
     void AddItemsToInventary(ItemsType type, int amount);
+
 
     //TODO Make Buildings create Items at speed proportinal to their lvl
 

@@ -47,7 +47,12 @@ void Building::Production(const float &dt){
 
 void Building::Draw()
 {
-    DrawRectangleGradientH(position.x, position.y, BUILDING_SIZE, BUILDING_SIZE, this->color, GOLD);
+    Color color = this->color;
+    if (selected){
+        DrawSelection();
+        color = ApplyBlueFilter(this->color);
+    }
+    DrawRectangle(position.x, position.y, BUILDING_SIZE, BUILDING_SIZE, color);
 }
 
 Vector2 Building::GetCenter()
@@ -106,6 +111,13 @@ void Building::AddItemsToConnection(Connection* con, float position){
 void Building::AddItemsToInventary(ItemsType type, int amount){
     inventary[type]+=amount;
 }
+
+
+void Building::DrawSelection(){
+    #define rectangle Rectangle{position.x-2, position.y-2, BUILDING_SIZE+2, BUILDING_SIZE+2}
+    DrawRectangleRoundedLines(rectangle, 0.5, 4, 1, RED);
+}
+
 
 
 

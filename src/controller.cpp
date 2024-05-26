@@ -44,9 +44,8 @@ void Controller::CheckNewBuildingSelected(WorldMap* &worldMap)
                 selectedBuilding->UpdateConnections();
                 selectedBuilding->SetPosition(Vector2SubtractValue(mousePosition, BUILDING_SIZE/2));
             }
-            else if (areaSelected){ //If not needed
-                DrawSelectionRectangle(Rectangle{areaSelectionOriginPoint.x, areaSelectionOriginPoint.y, 
-                    mousePosition.x- areaSelectionOriginPoint.x, mousePosition.y - areaSelectionOriginPoint.y}, WHITE);
+            else if (areaSelected){ //FIXME No control of layer
+                DrawSelectionRectangle();
             }
             
         }
@@ -58,6 +57,11 @@ void Controller::CheckNewBuildingSelected(WorldMap* &worldMap)
             buildingSelected = false;
         }
         else if(areaSelected){
+            int rectX = (areaSelectionOriginPoint.x < mousePosition.x) ? areaSelectionOriginPoint.x : mousePosition.x;
+            int rectY = (areaSelectionOriginPoint.y < mousePosition.y) ? areaSelectionOriginPoint.y : mousePosition.y;
+            int rectWidth = abs(mousePosition.x - areaSelectionOriginPoint.x);
+            int rectHeight = abs(mousePosition.y - areaSelectionOriginPoint.y);
+
 
         }
     }
@@ -114,8 +118,24 @@ void Controller::CheckNewConnection(WorldMap* &worldMap){
 
 }
 
-//FIXME    bad recangle
-void DrawSelectionRectangle(Rectangle rectangle, Color color)
+
+void Controller::DrawSelectionRectangle()
 {
-    DrawRectangleRec(rectangle, Color{ 115, 214, 249, 60});
+    #define color Color{ 115, 214, 249, 60 }
+    
+    int rectX = (areaSelectionOriginPoint.x < mousePosition.x) ? areaSelectionOriginPoint.x : mousePosition.x;
+    int rectY = (areaSelectionOriginPoint.y < mousePosition.y) ? areaSelectionOriginPoint.y : mousePosition.y;
+    int rectWidth = abs(mousePosition.x - areaSelectionOriginPoint.x);
+    int rectHeight = abs(mousePosition.y - areaSelectionOriginPoint.y);
+
+    DrawRectangle(rectX, rectY, rectWidth, rectHeight, color);
+
+    std::cout << rectWidth << " " << rectHeight << std::endl;
+
+}
+
+
+void Controller::SelectArea(){
+
+    //TODO Select group of buildings
 }

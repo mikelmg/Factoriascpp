@@ -16,19 +16,17 @@ public:
     WorldMap();
     WorldMap(Camera2D* camera);
 
-    // BackgroundMesh();
     void Update(float dt);
     void Draw();
-    // void CheckNewBuildingSelected();
     void AddConnection(Building* BuildingO, Building* BuildingT);
     void AddBuilding();
-    // void CheckKeyboard();
     WorldMap* GetWorldMap();
     vector<Building*> GetBuildings();
     int ConnectionExists(Building* buildingO, Building* buildingT);
     void DeleteConnection(Building* buildingO, Building* buildingT, int i);
 
-
+    //TODO Select and move multiple buildings
+    //TODO Copy and paste buildings
     //TODO delete buildings
     //TODO phantom building when add
 private:

@@ -12,7 +12,8 @@ public:
     void CheckKeyboard(WorldMap* &worldMap);
     void CheckNewBuildingSelected(WorldMap* &worldMap);
     void CheckNewConnection(WorldMap* &worldMap);
-
+    void DrawSelectionRectangle();
+    void SelectArea();
 
 private:
     Camera2D* camera;

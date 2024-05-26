@@ -18,6 +18,8 @@ WorldMap::WorldMap(Camera2D* camera)
 {
     world.push_back (new Building(100, 100, 5));
     world.push_back (new Building(200, 200, 3));
+    world.push_back (new Building(200, 100, 2));
+    world.push_back (new Building(100, 200, 1));
 
     this->camera = camera;
 

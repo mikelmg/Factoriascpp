@@ -12,9 +12,10 @@ public:
     void NSelected();
     bool GetSelected();
     virtual void Draw() = 0;
+    virtual void DrawSelection()= 0;
     virtual Vector2 GetCenter() = 0;
     void CenterPosition();
-
+    static Color ApplyBlueFilter(Color originalColor);
 
 protected:
     Vector2 selectedPosition;
