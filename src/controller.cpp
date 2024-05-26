@@ -1,7 +1,7 @@
 #include "headers/controller.h"
 #include <raymath.h>
 
-void DrawDashedRectangleLines(Rectangle rectangle, Color color);
+void DrawSelectionRectangle(Rectangle rectangle, Color color);
 
 Controller::Controller(Camera2D* camera){
     this->camera = camera;
@@ -15,7 +15,6 @@ void Controller::UpdateMousePosition(){
 }
 
 void Controller::Update(WorldMap* &worldMap){
-    //TODO One shared mouse pos
     UpdateMousePosition();
     CheckNewBuildingSelected(worldMap);
     CheckKeyboard(worldMap);
@@ -46,7 +45,7 @@ void Controller::CheckNewBuildingSelected(WorldMap* &worldMap)
                 selectedBuilding->SetPosition(Vector2SubtractValue(mousePosition, BUILDING_SIZE/2));
             }
             else if (areaSelected){ //If not needed
-                DrawDashedRectangleLines(Rectangle{areaSelectionOriginPoint.x, areaSelectionOriginPoint.y, 
+                DrawSelectionRectangle(Rectangle{areaSelectionOriginPoint.x, areaSelectionOriginPoint.y, 
                     mousePosition.x- areaSelectionOriginPoint.x, mousePosition.y - areaSelectionOriginPoint.y}, WHITE);
             }
             
@@ -116,19 +115,7 @@ void Controller::CheckNewConnection(WorldMap* &worldMap){
 }
 
 //FIXME    bad recangle
-void DrawDashedRectangleLines(Rectangle rectangle, Color color)
+void DrawSelectionRectangle(Rectangle rectangle, Color color)
 {
-    // for (int i = 0; i < rectangle.width/LINE_SPACING)
-
-    // Dibujar líneas horizontales
-    for (int y = (int)rectangle.y; y < (int)(rectangle.y + rectangle.height); y += LINE_SPACING * 2)
-    {
-        DrawLine((int)rectangle.x, y, (int)(rectangle.x + rectangle.width), y, color);
-    }
-
-    // Dibujar líneas verticales
-    for (int x = (int)rectangle.x; x < (int)(rectangle.x + rectangle.width); x += LINE_SPACING * 2)
-    {
-        DrawLine(x, (int)rectangle.y, x, (int)(rectangle.y + rectangle.height), color);
-    }
+    DrawRectangleRec(rectangle, Color{ 115, 214, 249, 60});
 }
