@@ -1,18 +1,11 @@
 #include "headers/item.h"
 
-Item::Item()
-{
-}
-
 Item::Item(ItemsType type)
 {
-
     this->type = type;
-
-
 }
 
-
+// Draws any Item with a given coordinates, type and current upsize
 void Item::Draw(float upSize, Vector2 position, ItemsType type)
 {
     Color color;
