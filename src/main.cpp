@@ -21,12 +21,12 @@ int main()
 {
 
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "Factores!");
-    SetTargetFPS(60);
+    // SetTargetFPS(60);
 
     Camera2D camera = { 0 };
     camera.zoom = 1.0f;
 
-    WorldMap* worldMap = new WorldMap(&camera);
+    WorldMap* worldMap = new WorldMap();
     Controller controller = Controller(&camera);
 
     while (!WindowShouldClose())

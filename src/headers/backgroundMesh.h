@@ -15,7 +15,6 @@ class BackgroundMesh //Declaration forward
 {
 public:
     static void Draw(Camera2D camera);
-    // BackgroundMesh();
 private:
 
 };

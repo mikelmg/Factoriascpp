@@ -27,14 +27,20 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
 {
     if(IsMouseButtonDown(MOUSE_LEFT_BUTTON) ){
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){//First frame
-            for(Building* building: worldMap->GetBuildings()) {
-                if( CheckCollisionPointRec(mousePosition, Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE})){
-                    building->Selected();
-                    selectedBuilding = building;
-                    buildingSelected = true;
+            if (!areaSelected) {
+                for(Building* building: worldMap->GetBuildings()) {
+                    if( CheckCollisionPointRec(mousePosition, Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE})){
+                        building->Selected();
+                        selectedBuilding = building;
+                        buildingSelected = true;
+                    }
                 }
             }
+            else{
+                for(Building* building: selectedBuildingsVector) 
+                    if( CheckCollisionPointRec(mousePosition, Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE})) buildingSelected = true;
 
+            }
             if (!buildingSelected){
                 if(areaSelected){
                     areaSelected = false;
@@ -45,9 +51,7 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
                 areaPreSelected = true;
                 areaSelectionOriginPoint = mousePosition;
             }
-
             else {
-
                 offset = Vector2Subtract(mousePosition, selectedBuilding->GetPosition());
             }
 
@@ -61,8 +65,6 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
                         building->SetPosition(Vector2Subtract(building->GetSelectedPosition(), offsetM));
                         building->UpdateConnections();
                     }
-                    std::cout << mouseOriginalPosition.x << endl;
-
                 }
                 else{
                     selectedBuilding->UpdateConnections();

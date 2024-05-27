@@ -90,21 +90,15 @@ public:
     void AddItemsToConnection(Connection* con, float positions);
     void AddItemsToInventary(ItemsType type, int amount);
     Rectangle GetRectangle();
-
     //TODO Make Buildings create Items at speed proportinal to their lvl
 
 private:
-    // Vector2 position;
-    // bool selected;
-
     int level;
     Color color;
     std::vector<Connection*> inConnections;
     std::vector<Connection*> outConnections;
     std::unordered_map<ItemsType, int> inventary;
     float spawnTimer;
-    
-
 };
 
 

@@ -44,7 +44,6 @@ void Connection::Update(float dt)
 
 void Connection::Draw(float upSize)
 {
-
     //Draw Spline connecting to buildings
     Vector2 dots[4] = { origin->GetCenter() ,controlO, controlT, target->GetCenter()};
     DrawSplineBezierCubic(dots, 4, 4, RED);
