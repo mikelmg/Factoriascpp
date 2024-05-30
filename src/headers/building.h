@@ -95,9 +95,6 @@ public:
 private:
     int level;
     Color color;
-    std::vector<Connection*> inConnections;
-    std::vector<Connection*> outConnections;
-    std::unordered_map<ItemsType, int> inventary;
     float spawnTimer;
 };
 

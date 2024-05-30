@@ -1,6 +1,7 @@
 #include "headers/building.h"
 #include <raymath.h>
 #include <algorithm>
+#include <string>
 
 //FIXME change to recipe
 #define OUTPUT_FREQUENCY 0.4
@@ -29,7 +30,7 @@ Building::Building(int x, int y, int level){
 
 void Building::Production(const float &dt){
 
-    //TODO Implement Recipes
+    //TODO Add class Recipes
         
     spawnTimer += dt;
     int amountProduced = spawnTimer / OUTPUT_FREQUENCY;
@@ -37,7 +38,7 @@ void Building::Production(const float &dt){
     if(spawnTimer >= OUTPUT_FREQUENCY){
         for(Connection* con: outConnections){//Every Conn
             for(int i = 1; i <= amountProduced; i++)//In case of lag
-                con->AddItem(spawnTimer-OUTPUT_FREQUENCY*i);//Is this order right?
+                AddItemsToConnection(con, spawnTimer-OUTPUT_FREQUENCY*i);//Is this order right?
         }
         spawnTimer=0;
     }
@@ -47,6 +48,30 @@ void Building::Production(const float &dt){
 
 void Building::Draw()
 {
+    
+    for (auto const& [key, val] : inventary){
+        std::string text;
+        switch (key)
+        {
+        case IRON:
+            text = "Iron";
+            break;
+        
+        case COPPER:
+            text = "Copper";
+            break;
+
+        case COBALT:
+            text = "Cobalt";
+            break;
+        }
+
+        text.append(": ");
+        text.append(std::to_string(val));
+
+        DrawText(text.data(), position.x, position.y -20, 20, GREEN);
+    }
+
     Color color = this->color;
     if (selected){
         DrawSelection();
@@ -106,6 +131,7 @@ void Building::DeleteOutConnection(Connection* con){
 
 void Building::AddItemsToConnection(Connection* con, float position){
     con->AddItem(position);
+    inventary[COBALT]--;
 }
 
 void Building::AddItemsToInventary(ItemsType type, int amount){

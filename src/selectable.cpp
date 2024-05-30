@@ -59,3 +59,11 @@ void Selectable::NSelected(){
 bool Selectable::GetSelected(){
     return selected; 
 }
+
+void Selectable::AddItemsToConnection(Connection* con, float position){
+    con->AddItem(position);
+}
+
+void Selectable::AddItemsToInventary(ItemsType type, int amount){
+    inventary[type]+=amount;
+}

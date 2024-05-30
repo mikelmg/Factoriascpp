@@ -36,7 +36,8 @@ void Connection::Update(float dt)
         //Actualiza su posicion 
         //If reached -> delete
         if(items[i] >= length){
-            items.pop_back(); 
+            items.pop_back();
+            target->AddItemsToInventary(type, 1);
         }
     }
 
