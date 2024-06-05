@@ -81,6 +81,7 @@ public:
     void DrawSelection();
     Vector2 GetCenter();
     int GetSize() override; 
+    SelectableTypes GetSelectableType() override;
 
     void Production(const float &dt);
 

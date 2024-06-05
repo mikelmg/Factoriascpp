@@ -88,3 +88,7 @@ int Mine::GetSize() {
 void Mine::AddItemsToConnection(Connection* con, float position){
     con->AddItem(position);
 }
+
+SelectableTypes Mine::GetSelectableType() {
+    return MINE;
+}

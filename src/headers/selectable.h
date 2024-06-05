@@ -5,6 +5,12 @@
 #include "item.h"
 #include <unordered_map>
 
+enum SelectableTypes{
+    BUILDING,
+    BUFFER,
+    MINE
+};
+
 class Connection;
 //TODO add class origin of materials that implements Selectable
 class Selectable //Declaration forward
@@ -41,6 +47,9 @@ public:
     Vector2 GetSelectedPosition();                                      // Get Original position when dragged
     bool GetSelected();                                                 // Get if it is currently been selected (to move, act, etc)
     virtual int GetSize() = 0;
+    virtual SelectableTypes GetSelectableType() = 0;
+
+
 
     void UpdateConnections();
     void AddInConnection(Connection* con);

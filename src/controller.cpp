@@ -128,7 +128,7 @@ void Controller::CheckNewConnection(WorldMap* &worldMap){
         for(Selectable* selectable: worldMap->GetSelectables()){
             //Building clicked -> Add/Delte conn
             if (CheckCollisionPointRec(mousePosition, 
-                Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()}))
+                Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})&& selectable->GetSelectableType() != MINE)
             {//Check if conn already exists
                 int i = worldMap->ConnectionExists(buildingConnSelected, selectable);
                 if(i==-1){//Add new connection   

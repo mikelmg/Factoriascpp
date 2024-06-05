@@ -20,3 +20,6 @@
 
     int Buffer::GetSize()  { }
 
+SelectableTypes Buffer::GetSelectableType() {
+    return BUFFER;
+}

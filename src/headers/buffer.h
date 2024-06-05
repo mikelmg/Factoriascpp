@@ -13,6 +13,7 @@ public:
     Vector2 GetCenter();
     Rectangle GetRectangle() override;
     int GetSize() override;
+    SelectableTypes GetSelectableType() override;
 
 private:
     ItemsType type;

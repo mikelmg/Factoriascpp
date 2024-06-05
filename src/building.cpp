@@ -86,5 +86,8 @@ int Building::GetSize() {
     return BUILDING_SIZE;
 }
 
+SelectableTypes Building::GetSelectableType() {
+    return BUILDING;
+}
 
 
