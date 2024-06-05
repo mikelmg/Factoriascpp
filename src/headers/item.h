@@ -1,6 +1,8 @@
 #pragma once
 #include <raylib.h>
 #include <vector>
+#include <string>
+
 
 //Possible types of item
 typedef enum {
@@ -20,14 +22,16 @@ typedef enum {
 
 const int ITEM_SIZE =10;
 
+
 class Item //Declaration forward
 {
 protected:
     ItemsType type;                         // Type of the Item
 public:                            
     Item(ItemsType type);      
-    //TODO Add Non static, no pos and type method           
     void Draw(float upSize);                                                    // Draws this Item with a given current upsize                        
     static void Draw(float upSize, Vector2 position, ItemsType type);           // Draws any Item with a given coordinates, type and current upsize
+    static std::string toString(ItemsType type);
+    static Color toColor(ItemsType type);
 
 };

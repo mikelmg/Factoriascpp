@@ -77,19 +77,14 @@ class Building: public Selectable //Declaration forward
 public:
     Building();
     Building(int x, int y, int level);
-    void Update(float dt);
     void Draw();
     void DrawSelection();
     Vector2 GetCenter();
-    void UpdateConnections();
-    void AddInConnection(Connection* con);
-    void AddOutConnection(Connection* con);
-    void DeleteInConnection(Connection* con);
-    void DeleteOutConnection(Connection* con); 
+    int GetSize() override; 
+
     void Production(const float &dt);
-    void AddItemsToConnection(Connection* con, float positions);
-    void AddItemsToInventary(ItemsType type, int amount);
-    Rectangle GetRectangle();
+
+    Rectangle GetRectangle() override;
     //TODO Make Buildings create Items at speed proportinal to their lvl
 
 private:

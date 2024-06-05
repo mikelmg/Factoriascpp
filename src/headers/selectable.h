@@ -37,6 +37,15 @@ public:
 
     Vector2 GetPosition();                                              // Get Coordinates in the world (top left corner of the object)
     virtual Vector2 GetCenter() = 0;                                    // Abstract: Get the center of the object, calculated from the position and size
+    virtual Rectangle GetRectangle();
     Vector2 GetSelectedPosition();                                      // Get Original position when dragged
     bool GetSelected();                                                 // Get if it is currently been selected (to move, act, etc)
+    virtual int GetSize() = 0;
+
+    void UpdateConnections();
+    void AddInConnection(Connection* con);
+    void AddOutConnection(Connection* con);
+    void DeleteInConnection(Connection* con);
+    void DeleteOutConnection(Connection* con); 
+
 };

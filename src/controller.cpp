@@ -1,5 +1,8 @@
 #include "headers/controller.h"
+#include "headers/combinedIterator.h"
 #include <raymath.h>
+
+
 
 void DrawSelectionRectangle(Rectangle rectangle, Color color);
 
@@ -28,25 +31,25 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
     if(IsMouseButtonDown(MOUSE_LEFT_BUTTON) ){
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){//First frame
             if (!areaSelected) {
-                for(Building* building: worldMap->GetBuildings()) {
-                    if( CheckCollisionPointRec(mousePosition, Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE})){
-                        building->Selected();
-                        selectedBuilding = building;
+                for(Selectable* selectable: worldMap->GetSelectables()){
+                    if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
+                        selectable->Selected();
+                        selectedBuilding = selectable;
                         buildingSelected = true;
                     }
                 }
             }
             else{
-                for(Building* building: selectedBuildingsVector) 
-                    if( CheckCollisionPointRec(mousePosition, Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE})) buildingSelected = true;
+                for(Selectable* selectable: selectedVector) 
+                    if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})) buildingSelected = true;
 
             }
             if (!buildingSelected){
                 if(areaSelected){
                     areaSelected = false;
-                    for(Building* building: selectedBuildingsVector) 
-                        building->NSelected();
-                    selectedBuildingsVector.clear();
+                    for(Selectable* selectable: selectedVector) 
+                        selectable->NSelected();
+                    selectedVector.clear();
                 }
                 areaPreSelected = true;
                 areaSelectionOriginPoint = mousePosition;
@@ -60,10 +63,10 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
         else {
             if (buildingSelected){
                 if (areaSelected){
-                    for(Building* building: selectedBuildingsVector) {
+                    for(Selectable* selectable: selectedVector) {
                         Vector2 offsetM = Vector2Subtract(mouseOriginalPosition, mousePosition);
-                        building->SetPosition(Vector2Subtract(building->GetSelectedPosition(), offsetM));
-                        building->UpdateConnections();
+                        selectable->SetPosition(Vector2Subtract(selectable->GetSelectedPosition(), offsetM));
+                        selectable->UpdateConnections();
                     }
                 }
                 else{
@@ -80,9 +83,9 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
     else if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)){
         if (buildingSelected){
             if (areaSelected){
-                for(Building* building: selectedBuildingsVector) {
-                    building->CenterPosition();
-                    building->StoreInitialPosition();
+                for(Selectable* selectable: selectedVector) {
+                    selectable->CenterPosition();
+                    selectable->StoreInitialPosition();
                 }
                 buildingSelected = false;
             }
@@ -111,31 +114,31 @@ void Controller::CheckNewConnection(WorldMap* &worldMap){
     //If right button but not selected
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !conSelected){
         //Check every building for that coordinates
-        for (Building* building: worldMap->GetBuildings()){
+        for(Selectable* selectable: worldMap->GetSelectables()){
             if (CheckCollisionPointRec(mousePosition, 
-                Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE}))
+                Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()}))
             {
                 conSelected = true;
-                buildingConnSelected = building;
+                buildingConnSelected = selectable;
             }
         }
     }
     //If left/right button and Selected -> Create/Cancel Connection 
     else if ((IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && conSelected){
         //Check every building
-        for (Building* building: worldMap->GetBuildings()){
+        for(Selectable* selectable: worldMap->GetSelectables()){
             //Building clicked -> Add/Delte conn
             if (CheckCollisionPointRec(mousePosition, 
-                Rectangle{building->GetPosition().x, building->GetPosition().y, BUILDING_SIZE, BUILDING_SIZE}))
+                Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()}))
             {//Check if conn already exists
-                int i = worldMap->ConnectionExists(buildingConnSelected, building);
+                int i = worldMap->ConnectionExists(buildingConnSelected, selectable);
                 if(i==-1){//Add new connection   
-                    worldMap->AddConnection(buildingConnSelected, building);
+                    worldMap->AddConnection(buildingConnSelected, selectable);
                     conSelected = false;
                     break;
                 }
                 else{//If a connection already exists -> delete it
-                    worldMap->DeleteConnection(buildingConnSelected, building, i);
+                    worldMap->DeleteConnection(buildingConnSelected, selectable, i);
                 }
             }            
         }
@@ -173,15 +176,13 @@ bool Controller::SelectArea(WorldMap* &worldMap){
 
     Rectangle selectionRec{rectX, rectY, rectWidth, rectHeight};
 
-    for(Building* building: worldMap->GetBuildings()) {
-        
-        if( CheckCollisionRecs(selectionRec, building->GetRectangle())){
-            building->Selected();
-            selectedBuildingsVector.push_back(building);
-            building->StoreInitialPosition();
-
+    for(Selectable* selectable: worldMap->GetSelectables()){
+        if( CheckCollisionRecs(selectionRec, selectable->GetRectangle())){
+            selectable->Selected();
+            selectedVector.push_back(selectable);
+            selectable->StoreInitialPosition();
         }
     }
-
-    return !selectedBuildingsVector.empty();
+    
+    return !selectedVector.empty();
 }

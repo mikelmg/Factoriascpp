@@ -8,10 +8,19 @@
 
 WorldMap::WorldMap()
 {
-    world.push_back (new Building(100, 100, 5));
-    world.push_back (new Building(200, 200, 3));
-    world.push_back (new Building(200, 100, 2));
-    world.push_back (new Building(100, 200, 1));
+    buildings.push_back (new Building(100, 100, 5));
+    buildings.push_back (new Building(200, 200, 3));
+    buildings.push_back (new Building(200, 100, 2));
+    buildings.push_back (new Building(100, 200, 1));
+
+    mines.push_back (new Mine(Vector2{300, 0}, COBALT));
+
+    selectables.push_back(buildings[0]);
+    selectables.push_back(buildings[1]);
+    selectables.push_back(buildings[2]);
+    selectables.push_back(buildings[3]);
+
+    selectables.push_back(mines[0]);
 }
 
 // Updates world in each frame, buildings, connections etc
@@ -19,8 +28,12 @@ void WorldMap::Update(float dt)
 {
     upSize = MAX_ITEM_UPSCALE* sin( clock()/ITEM_UPSCALE_CYCLE_RATE  );
 
+    for(Mine* mine: mines) {
+        mine->Creation(dt);
+    }
+
     //Update Buildings
-    for (Building* sel: world)
+    for (Building* sel: buildings)
         sel->Production(dt);
 
     //Update Connections
@@ -33,8 +46,12 @@ void WorldMap::Draw()
 {
     DrawText("B for new Building", 200, 80, 30, RED);
     //Draw all buildings
-    for(Selectable* building: world) {
+    for(Selectable* building: buildings) {
         building->Draw();
+    }
+
+    for(Selectable* mine: mines) {
+        mine->Draw();
     }
 
     //Draw all connections
@@ -46,7 +63,7 @@ void WorldMap::Draw()
 }
 
 // Creates a new connection between two given buildings
-void WorldMap::AddConnection(Building* BuildingO, Building* BuildingT){
+void WorldMap::AddConnection(Selectable* BuildingO, Selectable* BuildingT){
     connections.push_back(new Connection(BuildingO,BuildingT));
     BuildingO->AddOutConnection(connections.back());
     BuildingT->AddInConnection(connections.back());
@@ -54,12 +71,13 @@ void WorldMap::AddConnection(Building* BuildingO, Building* BuildingT){
 
 // Adds a buildings to the world
 void WorldMap::AddBuilding(){
-    world.push_back(new Building(50* GetRandomValue(0, 10), 50* GetRandomValue(0, 10), 1));
+    buildings.push_back(new Building(50* GetRandomValue(0, 10), 50* GetRandomValue(0, 10), 1));
+    selectables.push_back(buildings.back());
 }
 
 
 // Given two buildings, returns -1 if a connection between two given buildings does not exist or the index in the list of connections to it
-int WorldMap::ConnectionExists(Building* buildingO, Building* buildingT){
+int WorldMap::ConnectionExists(Selectable* buildingO, Selectable* buildingT){
 
     //Exists
     for (auto it = connections.begin(); it != connections.end(); ++it){
@@ -72,7 +90,7 @@ int WorldMap::ConnectionExists(Building* buildingO, Building* buildingT){
 }
 
 // Given an index to the list of connections, delete that conn, handle memory
-void WorldMap::DeleteConnection(Building* buildingO, Building* buildingT, int i){
+void WorldMap::DeleteConnection(Selectable* buildingO, Selectable* buildingT, int i){
     delete connections[i];
 
     buildingO->DeleteOutConnection(connections[i]);
@@ -83,5 +101,13 @@ void WorldMap::DeleteConnection(Building* buildingO, Building* buildingT, int i)
 
 // Get list of buildings
 vector<Building*> WorldMap::GetBuildings(){
-    return world;
+    return buildings;
+}
+
+vector<Mine*> WorldMap::GetMines(){
+    return mines;
+}
+
+vector<Selectable*> WorldMap::GetSelectables(){
+    return selectables;
 }

@@ -2,6 +2,7 @@
 #include <raymath.h>
 #include <algorithm>
 #include <string>
+#include "headers/item.h"
 
 //FIXME change to recipe
 #define OUTPUT_FREQUENCY 0.4
@@ -50,22 +51,8 @@ void Building::Draw()
 {
     
     for (auto const& [key, val] : inventary){
-        std::string text;
-        switch (key)
-        {
-        case IRON:
-            text = "Iron";
-            break;
+        std::string text = Item::toString(key);
         
-        case COPPER:
-            text = "Copper";
-            break;
-
-        case COBALT:
-            text = "Cobalt";
-            break;
-        }
-
         text.append(": ");
         text.append(std::to_string(val));
 
@@ -85,60 +72,6 @@ Vector2 Building::GetCenter()
     return Vector2(Vector2AddValue(position, BUILDING_SIZE/2) );
 }
 
-void Building::UpdateConnections()
-{
-    for(Connection* con: inConnections){
-        con->UpdateControl();
-        con->UpdateBezierLength();
-    }
-
-    for(Connection* con: outConnections){
-        con->UpdateControl();
-        con->UpdateBezierLength();
-    }
-}
-
-void Building::AddInConnection(Connection* con){
-    inConnections.push_back(con);
-}
-
-void Building::AddOutConnection(Connection* con){
-    outConnections.push_back(con);
-}
-
-void Building::DeleteInConnection(Connection* con){
-    // Find the element in the vector
-    std::vector<Connection*>::iterator it = std::find(inConnections.begin(), inConnections.end(), con);
-
-    // If the element is found, erase it from the vector
-    if (it != inConnections.end()) {
-        inConnections.erase(it);
-    }
-}
-
-void Building::DeleteOutConnection(Connection* con){
-    // Find the element in the vector
-    std::vector<Connection*>::iterator it = std::find(outConnections.begin(), outConnections.end(), con);
-
-    // If the element is found, erase it from the vector
-    if (it != outConnections.end()) {
-        outConnections.erase(it);
-    }
-
-    // inventary.inventary[0];
-}
-
-
-void Building::AddItemsToConnection(Connection* con, float position){
-    con->AddItem(position);
-    inventary[COBALT]--;
-}
-
-void Building::AddItemsToInventary(ItemsType type, int amount){
-    inventary[type]+=amount;
-}
-
-
 void Building::DrawSelection(){
     #define rectangle Rectangle{position.x-2, position.y-2, BUILDING_SIZE+2, BUILDING_SIZE+2}
     DrawRectangleRoundedLines(rectangle, 0.5, 4, 1, RED);
@@ -149,7 +82,9 @@ Rectangle Building::GetRectangle(){
     return Rectangle{position.x, position.y, BUILDING_SIZE, BUILDING_SIZE};
 }
 
-
+int Building::GetSize() {
+    return BUILDING_SIZE;
+}
 
 
 
