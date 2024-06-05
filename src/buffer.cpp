@@ -1,5 +1,6 @@
 #include "headers/buffer.h"
 
+//TODO buffer class
     Buffer::Buffer(Vector2 position) {
 
     }

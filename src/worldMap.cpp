@@ -62,9 +62,32 @@ void WorldMap::AddConnection(Selectable* BuildingO, Selectable* BuildingT){
 }
 
 // Adds a buildings to the world
-void WorldMap::AddBuilding(){
+void WorldMap::AddBuilding(Vector2 position){
     buildings.push_back(new Building(50* GetRandomValue(0, 10), 50* GetRandomValue(0, 10), 1));
     selectables.push_back(buildings.back());
+}
+
+// Erases a building from the world
+void WorldMap::EraseBuilding(Building* building){
+    buildings.erase(remove(buildings.begin(), buildings.end(), building), buildings.end());
+    selectables.erase(remove(selectables.begin(), selectables.end(), building), selectables.end());
+    //TODO REMOVE CONNECTIONS from the world vector and from the buildings
+    building->DeleteAllConnections();
+    DeleteConnectionSelectable(building);
+
+    delete building;
+}
+
+void WorldMap::AddMine(Vector2 position){
+    position = {(float)50* GetRandomValue(0, 10), (float)50* GetRandomValue(0, 10)};
+    mines.push_back(new Mine(position, COBALT));
+    selectables.push_back(mines.back());
+}
+
+void WorldMap::EraseMine(Mine* mine){
+    std::remove(mines.begin(), mines.end(), mine);
+    std::remove(selectables.begin(), selectables.end(), mine);
+    delete mine;
 }
 
 
@@ -89,6 +112,18 @@ void WorldMap::DeleteConnection(Selectable* buildingO, Selectable* buildingT, in
     buildingT->DeleteInConnection(connections[i]);
 
     connections.erase(connections.begin()+i);
+}
+
+void WorldMap::DeleteConnectionSelectable(Selectable* selectable){    
+    for (auto it = connections.begin(); it != connections.end(); ) {
+        if((*it)->GetOrigin() == selectable || (*it)->GetTarget() == selectable){
+            delete *it;
+            it = connections.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
 }
 
 // Get list of buildings

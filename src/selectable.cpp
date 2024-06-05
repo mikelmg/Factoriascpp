@@ -3,6 +3,22 @@
 #include <cmath> // Include this header for fmod
 #include <algorithm>
 
+Selectable::~Selectable() {
+    for (Connection* con: inConnections) {
+        con->GetOrigin()->DeleteOutConnection(con);
+        delete con;
+    }
+    inConnections.clear();
+
+    for (Connection* con: outConnections) {
+        con->GetTarget()->DeleteInConnection(con);
+        delete con;
+    }
+    outConnections.clear();
+
+    inventary.clear();
+}
+
 // Rounds position of the object to snap to grid
 void Selectable::CenterPosition(){
     position.x = std::round(position.x / MESH_DISTANCE) * MESH_DISTANCE;
@@ -117,4 +133,14 @@ Rectangle Selectable::GetRectangle(){
     return Rectangle{position.x, position.y, 40, 40};
 }
 
+void Selectable::DeleteAllConnections(){
+    for(Connection* con: inConnections){
+        con->GetOrigin()->DeleteOutConnection(con);
+        this->DeleteInConnection(con);
+    }
 
+    for(Connection* con: outConnections){
+        con->GetTarget()->DeleteInConnection(con);
+        this->DeleteOutConnection(con);
+    }   
+}

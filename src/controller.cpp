@@ -1,6 +1,6 @@
 #include "headers/controller.h"
 #include <raymath.h>
-
+#include <iostream>
 
 
 void DrawSelectionRectangle(Rectangle rectangle, Color color);
@@ -23,12 +23,15 @@ void Controller::Update(WorldMap* &worldMap){
     CheckKeyboard(worldMap);
     CheckNewConnection(worldMap);
 }
-
+//TODO ADD multiple connection when group selected
 //TODO Simplify this
 void Controller::CheckLeftClick(WorldMap* &worldMap)
 {
     if(IsMouseButtonDown(MOUSE_LEFT_BUTTON) ){
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){//First frame
+            buildingSelected = false;
+            selectedBuilding->NSelected();
+            
             if (!areaSelected) {
                 for(Selectable* selectable: worldMap->GetSelectables()){
                     if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
@@ -52,8 +55,18 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
                 }
                 areaPreSelected = true;
                 areaSelectionOriginPoint = mousePosition;
+                mouseOriginalPosition = mousePosition;
             }
             else {
+
+
+                for(Selectable* selectable: worldMap->GetSelectables()){
+                    if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
+                        selectable->Selected();
+                        selectedBuilding = selectable;
+                        buildingSelected = true;
+                    }
+                }
                 offset = Vector2Subtract(mousePosition, selectedBuilding->GetPosition());
             }
 
@@ -89,9 +102,13 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
                 buildingSelected = false;
             }
             else{
-                selectedBuilding->NSelected();
                 selectedBuilding->CenterPosition();
-                buildingSelected = false;
+
+                std::cout << mouseOriginalPosition.x << " " << mouseOriginalPosition.y << " " << mousePosition.x << " " << mousePosition.y << endl;
+                if(mouseOriginalPosition.x == mousePosition.x && mouseOriginalPosition.y != mousePosition.y){
+                    selectedBuilding->NSelected();
+                    buildingSelected = false;
+                }
             }
         }
         else if(areaPreSelected){
@@ -104,7 +121,22 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
 
 void Controller::CheckKeyboard(WorldMap* &worldMap){
     if(IsKeyPressed(KEY_B)){
-        worldMap->AddBuilding();
+        Vector2 position = {0,0};
+        worldMap->AddBuilding(position);
+    }
+
+    if (IsKeyPressed(KEY_DELETE) && (buildingSelected || areaSelected)) {
+        cout << "DELETING" << endl;
+        for (Selectable* selectable: selectedVector) {
+            if (selectable->GetSelectableType() == BUILDING)
+                worldMap->EraseBuilding((Building*)selectable);
+            else if (selectable->GetSelectableType() == MINE)
+                worldMap->EraseMine((Mine*)selectable);
+            // else if (selectable->GetSelectableType() == BUFFER)
+            //     worldMap->EraseBuffer((Buffer*)selectable);
+        }
+        selectedVector.clear();
+        buildingSelected = false;
     }
 }
 
@@ -146,7 +178,9 @@ void Controller::CheckNewConnection(WorldMap* &worldMap){
     }
     //No button but connection selected->Draw curve
     else if (conSelected){
-        DrawLineBezier(buildingConnSelected->GetCenter(), GetScreenToWorld2D(GetMousePosition(), *camera), 4, RED );
+        for(Selectable* selectable: selectedVector ){
+            DrawLineBezier(selectable->GetCenter(), GetScreenToWorld2D(GetMousePosition(), *camera), 4, PINK );
+        }
     }
     
 

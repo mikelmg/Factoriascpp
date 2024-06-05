@@ -28,11 +28,14 @@ protected:
     bool selected;                                               // The Selectable is currently been selected (to move, act, etc)
 
 public:
+    virtual ~Selectable();	
+
     void CenterPosition();                                              // Rounds position of the object to snap to grid
     static Color ApplyBlueFilter(Color originalColor);                  // Given a color, returns it with a blue filter
     void StoreInitialPosition();                                        // Sets selectedPosition to position
     virtual void AddItemsToConnection(Connection* con, float position);
     void AddItemsToInventary(ItemsType type, int amount);
+    void DeleteAllConnections();
 
     virtual void Draw() = 0;                                            // Abstract: Draw the object by it's own implementation
     virtual void DrawSelection()= 0;                                    // Abstract: Draws the object selection mark by it's own implementation                     

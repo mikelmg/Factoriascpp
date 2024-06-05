@@ -26,11 +26,15 @@ public:
     void Update(float dt);                                                          // Updates world in each frame, buildings, connections etc
     void Draw();                                                                    // Calls everyones draw function
 
-    void AddBuilding();                                                             // Adds a buildings to the world
+    void AddBuilding(Vector2 position);                                                             // Adds a buildings to the world
+    void EraseBuilding(Building* building);
+    void AddMine(Vector2 position);
+    void EraseMine(Mine* mine);
 
     void AddConnection(Selectable* BuildingO, Selectable* BuildingT);                   // Creates a new connection between two given buildings
     int ConnectionExists(Selectable* buildingO, Selectable* buildingT);                 // Given two buildings, returns -1 if a connection between two given buildings does not exist or the index in the list of connections to it
     void DeleteConnection(Selectable* buildingO, Selectable* buildingT, int i);         // Given an index to the list of connections, delete that conn, handle memory
+    void DeleteConnectionSelectable(Selectable* selectable);
 
     vector<Building*> GetBuildings();                                               // Get list of buildings
     vector<Mine*> GetMines();                                                       // Get list of buildings

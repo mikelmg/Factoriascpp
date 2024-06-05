@@ -12,6 +12,7 @@ public:
     Mine();
     Mine(Vector2 position);
     Mine(Vector2 position, ItemsType type);
+    ~Mine() override;
 
     void Draw();
     void DrawSelection();

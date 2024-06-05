@@ -29,6 +29,24 @@ Building::Building(int x, int y, int level){
     selected = false;
 }
 
+Building::~Building() {
+    //Delete all connections from this building
+    for (Connection* con: inConnections) {
+        con->GetOrigin()->DeleteOutConnection(con);
+        delete con;
+    }
+    inConnections.clear();
+
+    for (Connection* con: outConnections) {
+        con->GetTarget()->DeleteInConnection(con);
+        delete con;
+    }
+    outConnections.clear();
+
+    inventary.clear();
+
+}
+
 void Building::Production(const float &dt){
 
     //TODO Add class Recipes

@@ -18,6 +18,11 @@ Connection::Connection(Selectable *origin, Selectable *target)
     UpdateBezierLength();
 }
 
+
+Connection::~Connection(){
+    items.erase(items.begin(), items.end());
+}
+
 void Connection::Selected()
 {
 }

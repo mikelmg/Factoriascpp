@@ -15,6 +15,8 @@ class Connection //Declaration forward
 public:
     Connection();
     Connection(Selectable* x, Selectable* y);
+    ~Connection();
+    
     void Selected();
     void NSelected();
     void Update(float dt);
