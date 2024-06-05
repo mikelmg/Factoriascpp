@@ -2,11 +2,8 @@
 #include <raymath.h>
 
 Mine::Mine(){
-
     position.x = 20;
     position.y = 20;
-
-
 }
 
 Mine::Mine(Vector2 position){
@@ -47,7 +44,6 @@ void Mine::Creation(const float &dt){
         }
         spawnTimer=0;
     }
-
 }
 
 
