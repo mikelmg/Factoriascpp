@@ -25,7 +25,7 @@ public:
     void CenterPosition();                                              // Rounds position of the object to snap to grid
     static Color ApplyBlueFilter(Color originalColor);                  // Given a color, returns it with a blue filter
     void StoreInitialPosition();                                        // Sets selectedPosition to position
-    void AddItemsToConnection(Connection* con, float position);
+    virtual void AddItemsToConnection(Connection* con, float position);
     void AddItemsToInventary(ItemsType type, int amount);
 
     virtual void Draw() = 0;                                            // Abstract: Draw the object by it's own implementation

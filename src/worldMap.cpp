@@ -45,21 +45,13 @@ void WorldMap::Update(float dt)
 void WorldMap::Draw()
 {
     DrawText("B for new Building", 200, 80, 30, RED);
-    //Draw all buildings
-    for(Selectable* building: buildings) {
-        building->Draw();
-    }
 
-    for(Selectable* mine: mines) {
-        mine->Draw();
-    }
+    for(auto it = selectables.begin(); it != selectables.end(); ++it)
+        (*it)->Draw();
 
     //Draw all connections
-    for(Connection* con: connections){
-        con->Draw(upSize);
-    }
-
-    
+    for(auto it = connections.begin(); it != connections.end(); ++it)
+        (*it)->Draw(upSize);
 }
 
 // Creates a new connection between two given buildings

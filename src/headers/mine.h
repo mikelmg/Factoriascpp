@@ -15,6 +15,9 @@ public:
 
     void Draw();
     void DrawSelection();
+
+    void AddItemsToConnection(Connection* con, float position);
+
     Vector2 GetCenter();
     Rectangle GetRectangle() override;
     int GetSize() override;

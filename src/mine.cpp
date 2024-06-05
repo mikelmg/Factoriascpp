@@ -84,3 +84,7 @@ Rectangle Mine::GetRectangle(){
 int Mine::GetSize() {
     return MINE_SIZE;
 }
+
+void Mine::AddItemsToConnection(Connection* con, float position){
+    con->AddItem(position);
+}
