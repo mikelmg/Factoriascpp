@@ -32,17 +32,13 @@ Mine::Mine(Vector2 position, ItemsType type){
 
 Mine::~Mine() {
     //Delete all connections from this building
-    for (Connection* con: inConnections) {
-        con->GetOrigin()->DeleteOutConnection(con);
-        delete con;
-    }
-    inConnections.clear();
-
     for (Connection* con: outConnections) {
         con->GetTarget()->DeleteInConnection(con);
         delete con;
     }
     outConnections.clear();
+
+    inventary.clear();
 }
 
 

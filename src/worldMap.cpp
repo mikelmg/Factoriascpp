@@ -71,10 +71,8 @@ void WorldMap::AddBuilding(Vector2 position){
 void WorldMap::EraseBuilding(Building* building){
     buildings.erase(remove(buildings.begin(), buildings.end(), building), buildings.end());
     selectables.erase(remove(selectables.begin(), selectables.end(), building), selectables.end());
-    //TODO REMOVE CONNECTIONS from the world vector and from the buildings
     building->DeleteAllConnections();
     DeleteConnectionSelectable(building);
-
     delete building;
 }
 
@@ -85,8 +83,10 @@ void WorldMap::AddMine(Vector2 position){
 }
 
 void WorldMap::EraseMine(Mine* mine){
-    std::remove(mines.begin(), mines.end(), mine);
-    std::remove(selectables.begin(), selectables.end(), mine);
+    mines.erase(remove(mines.begin(), mines.end(), mine), mines.end());
+    selectables.erase(remove(selectables.begin(), selectables.end(), mine), selectables.end());
+    mine->DeleteAllConnections();
+    DeleteConnectionSelectable(mine);
     delete mine;
 }
 

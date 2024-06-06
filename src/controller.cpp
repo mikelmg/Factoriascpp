@@ -23,54 +23,12 @@ void Controller::Update(WorldMap* &worldMap){
     CheckKeyboard(worldMap);
     CheckNewConnection(worldMap);
 }
-//TODO ADD multiple connection when group selected
 //TODO Simplify this
 void Controller::CheckLeftClick(WorldMap* &worldMap)
 {
     if(IsMouseButtonDown(MOUSE_LEFT_BUTTON) ){
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){//First frame
-            buildingSelected = false;
-            selectedBuilding->NSelected();
-            
-            if (!areaSelected) {
-                for(Selectable* selectable: worldMap->GetSelectables()){
-                    if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
-                        selectable->Selected();
-                        selectedBuilding = selectable;
-                        buildingSelected = true;
-                    }
-                }
-            }
-            else{
-                for(Selectable* selectable: selectedVector) 
-                    if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})) buildingSelected = true;
-
-            }
-            if (!buildingSelected){
-                if(areaSelected){
-                    areaSelected = false;
-                    for(Selectable* selectable: selectedVector) 
-                        selectable->NSelected();
-                    selectedVector.clear();
-                }
-                areaPreSelected = true;
-                areaSelectionOriginPoint = mousePosition;
-                mouseOriginalPosition = mousePosition;
-            }
-            else {
-
-
-                for(Selectable* selectable: worldMap->GetSelectables()){
-                    if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
-                        selectable->Selected();
-                        selectedBuilding = selectable;
-                        buildingSelected = true;
-                    }
-                }
-                offset = Vector2Subtract(mousePosition, selectedBuilding->GetPosition());
-            }
-
-            mouseOriginalPosition = mousePosition;
+            LeftButtonPressed(worldMap);
         }
         else {
             if (buildingSelected){
@@ -93,7 +51,54 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
         }
     }
     else if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)){
-        if (buildingSelected){
+        LeftButtonReleased(worldMap);
+    }
+
+}
+
+void Controller::LeftButtonPressed(WorldMap* &worldMap){
+    buildingSelected = false;
+    selectedBuilding->NSelected();
+
+    if (!areaSelected) {
+        for(Selectable* selectable: worldMap->GetSelectables()){
+            if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
+                selectable->Selected();
+                selectedBuilding = selectable;
+                buildingSelected = true;
+            }
+        }
+    }
+    else{
+        for(Selectable* selectable: selectedVector) 
+            if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})) buildingSelected = true;
+    }
+    if (!buildingSelected){
+        if(areaSelected){
+            areaSelected = false;
+            for(Selectable* selectable: selectedVector) 
+                selectable->NSelected();
+        selectedVector.clear();
+    }
+    areaPreSelected = true;
+    areaSelectionOriginPoint = mousePosition;
+    mouseOriginalPosition = mousePosition;
+    }
+    else {
+        for(Selectable* selectable: worldMap->GetSelectables()){
+            if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
+                selectable->Selected();
+                selectedBuilding = selectable;
+                buildingSelected = true;
+            }
+        }
+        offset = Vector2Subtract(mousePosition, selectedBuilding->GetPosition());
+    }
+    mouseOriginalPosition = mousePosition;   
+}
+
+void Controller::LeftButtonReleased(WorldMap* &worldMap){
+    if (buildingSelected){
             if (areaSelected){
                 for(Selectable* selectable: selectedVector) {
                     selectable->CenterPosition();
@@ -115,8 +120,6 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
             areaPreSelected = false;
             areaSelected = SelectArea(worldMap);
         }
-    }
-
 }
 
 void Controller::CheckKeyboard(WorldMap* &worldMap){
@@ -134,6 +137,12 @@ void Controller::CheckKeyboard(WorldMap* &worldMap){
                 worldMap->EraseMine((Mine*)selectable);
             // else if (selectable->GetSelectableType() == BUFFER)
             //     worldMap->EraseBuffer((Buffer*)selectable);
+        }
+        if(buildingSelected){
+            if(selectedBuilding->GetSelectableType() == BUILDING)
+                worldMap->EraseBuilding((Building*)buildingSelected);
+            else if(selectedBuilding->GetSelectableType() == MINE)
+                worldMap->EraseMine((Mine*)buildingSelected);
         }
         selectedVector.clear();
         buildingSelected = false;

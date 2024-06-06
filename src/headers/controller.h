@@ -11,6 +11,8 @@ public:
     void Update(WorldMap* &worldMap);
     void CheckKeyboard(WorldMap* &worldMap);
     void CheckLeftClick(WorldMap* &worldMap);
+    void LeftButtonPressed(WorldMap* &worldMap);
+    void LeftButtonReleased(WorldMap* &worldMap);
     void CheckNewConnection(WorldMap* &worldMap);
     void DrawSelectionRectangle();
     bool SelectArea(WorldMap* &worldMap);
