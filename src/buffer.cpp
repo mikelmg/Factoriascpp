@@ -15,11 +15,15 @@
 
     void Buffer::Update(const float& dt) {}
 
-    Vector2 Buffer::GetCenter() { }
+    Vector2 Buffer::GetCenter() {
+        return Vector2{ 0,0 };
+    }
 
-    Rectangle Buffer::GetRectangle()  {  }
+    Rectangle Buffer::GetRectangle()  { 
+        return Rectangle{};
+    }
 
-    int Buffer::GetSize()  { }
+    int Buffer::GetSize() { return 0; }
 
 SelectableTypes Buffer::GetSelectableType() {
     return BUFFER;

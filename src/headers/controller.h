@@ -16,19 +16,20 @@ public:
     void CheckNewConnection(WorldMap* &worldMap);
     void DrawSelectionRectangle();
     bool SelectArea(WorldMap* &worldMap);
+    void ClearSelection();
+    bool SelectOnClick(WorldMap* &worldMap);
+    void CreateConnection(WorldMap* &worldMap, Selectable* target);
 
 private:
     Camera2D* camera;
     Vector2 mousePosition;
-    Selectable* buildingConnSelected;
     std::vector <Selectable*> selectedVector;
-    Selectable* selectedBuilding;
     Vector2 areaSelectionOriginPoint;
     Vector2 mouseOriginalPosition;
     Vector2 offset;
-    bool buildingSelected;
     bool conSelected;
     bool areaPreSelected;
-    bool areaSelected;
+    bool activeSelection;
+    bool conCreated;
 
 };

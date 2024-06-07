@@ -8,9 +8,9 @@ void DrawSelectionRectangle(Rectangle rectangle, Color color);
 Controller::Controller(Camera2D* camera){
     this->camera = camera;
     conSelected = false;
-    buildingSelected = false;
     areaPreSelected = false;
-    areaSelected = false;
+    activeSelection = false;
+    conCreated = false;
 }
 
 void Controller::UpdateMousePosition(){
@@ -19,9 +19,10 @@ void Controller::UpdateMousePosition(){
 
 void Controller::Update(WorldMap* &worldMap){
     UpdateMousePosition();
+    CheckNewConnection(worldMap);
     CheckLeftClick(worldMap);
     CheckKeyboard(worldMap);
-    CheckNewConnection(worldMap);
+
 }
 //TODO Simplify this
 void Controller::CheckLeftClick(WorldMap* &worldMap)
@@ -31,23 +32,16 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
             LeftButtonPressed(worldMap);
         }
         else {
-            if (buildingSelected){
-                if (areaSelected){
-                    for(Selectable* selectable: selectedVector) {
-                        Vector2 offsetM = Vector2Subtract(mouseOriginalPosition, mousePosition);
-                        selectable->SetPosition(Vector2Subtract(selectable->GetSelectedPosition(), offsetM));
-                        selectable->UpdateConnections();
-                    }
-                }
-                else{
-                    selectedBuilding->UpdateConnections();
-                    selectedBuilding->SetPosition(Vector2Subtract(mousePosition, offset));
+            if (activeSelection){
+                for(Selectable* selectable: selectedVector) {
+                    Vector2 offsetM = Vector2Subtract(mouseOriginalPosition, mousePosition);
+                    selectable->SetPosition(Vector2Subtract(selectable->GetSelectedPosition(), offsetM));
+                    selectable->UpdateConnections();
                 }
             }
-            else if (areaPreSelected){ //FIXME No control of layer
+            if (areaPreSelected){ //FIXME No control of layer
                 DrawSelectionRectangle();
             }
-            
         }
     }
     else if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)){
@@ -56,70 +50,46 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
 
 }
 
+//Only first frame of click
 void Controller::LeftButtonPressed(WorldMap* &worldMap){
-    buildingSelected = false;
-    selectedBuilding->NSelected();
 
-    if (!areaSelected) {
-        for(Selectable* selectable: worldMap->GetSelectables()){
-            if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
-                selectable->Selected();
-                selectedBuilding = selectable;
-                buildingSelected = true;
-            }
-        }
+    if (!activeSelection) {
+        //Check if click in any selectable
+        activeSelection = SelectOnClick(worldMap);
     }
     else{
-        for(Selectable* selectable: selectedVector) 
-            if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})) buildingSelected = true;
-    }
-    if (!buildingSelected){
-        if(areaSelected){
-            areaSelected = false;
-            for(Selectable* selectable: selectedVector) 
-                selectable->NSelected();
-        selectedVector.clear();
-    }
-    areaPreSelected = true;
-    areaSelectionOriginPoint = mousePosition;
-    mouseOriginalPosition = mousePosition;
-    }
-    else {
-        for(Selectable* selectable: worldMap->GetSelectables()){
+        bool out = true;
+        //Check if click in any already selected
+        for(Selectable* selectable: selectedVector){
             if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
-                selectable->Selected();
-                selectedBuilding = selectable;
-                buildingSelected = true;
+                offset = Vector2Subtract(mousePosition, selectable->GetPosition());
+                out = false;
+                break;
             }
         }
-        offset = Vector2Subtract(mousePosition, selectedBuilding->GetPosition());
+        if(out){
+            ClearSelection();
+            activeSelection = SelectOnClick(worldMap);
+        }
+    }
+    if (!activeSelection){  //If click in area
+        areaSelectionOriginPoint = mousePosition;
+        areaPreSelected = true;
     }
     mouseOriginalPosition = mousePosition;   
 }
 
 void Controller::LeftButtonReleased(WorldMap* &worldMap){
-    if (buildingSelected){
-            if (areaSelected){
-                for(Selectable* selectable: selectedVector) {
-                    selectable->CenterPosition();
-                    selectable->StoreInitialPosition();
-                }
-                buildingSelected = false;
-            }
-            else{
-                selectedBuilding->CenterPosition();
-
-                std::cout << mouseOriginalPosition.x << " " << mouseOriginalPosition.y << " " << mousePosition.x << " " << mousePosition.y << endl;
-                if(mouseOriginalPosition.x == mousePosition.x && mouseOriginalPosition.y != mousePosition.y){
-                    selectedBuilding->NSelected();
-                    buildingSelected = false;
-                }
-            }
+    if (activeSelection) {
+        for(Selectable* selectable: selectedVector) {
+            selectable->StoreInitialPosition();
+            selectable->CenterPosition();
         }
-        else if(areaPreSelected){
-            areaPreSelected = false;
-            areaSelected = SelectArea(worldMap);
-        }
+    }
+    else if(areaPreSelected){
+        areaPreSelected = false;
+        activeSelection = SelectArea(worldMap);
+    }
 }
 
 void Controller::CheckKeyboard(WorldMap* &worldMap){
@@ -128,7 +98,7 @@ void Controller::CheckKeyboard(WorldMap* &worldMap){
         worldMap->AddBuilding(position);
     }
 
-    if (IsKeyPressed(KEY_DELETE) && (buildingSelected || areaSelected)) {
+    if (IsKeyPressed(KEY_DELETE) && activeSelection) {
         cout << "DELETING" << endl;
         for (Selectable* selectable: selectedVector) {
             if (selectable->GetSelectableType() == BUILDING)
@@ -138,14 +108,8 @@ void Controller::CheckKeyboard(WorldMap* &worldMap){
             // else if (selectable->GetSelectableType() == BUFFER)
             //     worldMap->EraseBuffer((Buffer*)selectable);
         }
-        if(buildingSelected){
-            if(selectedBuilding->GetSelectableType() == BUILDING)
-                worldMap->EraseBuilding((Building*)buildingSelected);
-            else if(selectedBuilding->GetSelectableType() == MINE)
-                worldMap->EraseMine((Mine*)buildingSelected);
-        }
         selectedVector.clear();
-        buildingSelected = false;
+        activeSelection = false;
     }
 }
 
@@ -154,35 +118,44 @@ void Controller::CheckNewConnection(WorldMap* &worldMap){
     //If right button but not selected
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !conSelected){
         //Check every building for that coordinates
-        for(Selectable* selectable: worldMap->GetSelectables()){
-            if (CheckCollisionPointRec(mousePosition, 
-                Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()}))
-            {
-                conSelected = true;
-                buildingConnSelected = selectable;
+
+        bool out = true;
+        //Check if click in any already selected
+        for(Selectable* selectable: selectedVector){
+            if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
+                out = false;
+                break;
             }
         }
+        if(out){
+            ClearSelection();
+            activeSelection = SelectOnClick(worldMap);
+        }
+
+        for(Selectable* selectable: worldMap->GetSelectables()){
+            if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
+                activeSelection = true;
+                conSelected = true;
+                if (!selectable->GetSelected()){
+                    selectable->Selected();
+                    selectedVector.push_back(selectable);
+                }
+            }
+        }         
     }
     //If left/right button and Selected -> Create/Cancel Connection 
     else if ((IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && conSelected){
         //Check every building
+  
         for(Selectable* selectable: worldMap->GetSelectables()){
             //Building clicked -> Add/Delte conn
             if (CheckCollisionPointRec(mousePosition, 
                 Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})&& selectable->GetSelectableType() != MINE)
             {//Check if conn already exists
-                int i = worldMap->ConnectionExists(buildingConnSelected, selectable);
-                if(i==-1){//Add new connection   
-                    worldMap->AddConnection(buildingConnSelected, selectable);
-                    conSelected = false;
-                    break;
-                }
-                else{//If a connection already exists -> delete it
-                    worldMap->DeleteConnection(buildingConnSelected, selectable, i);
-                }
-            }            
+                CreateConnection(worldMap, selectable);
+
+            }           
         }
-        //Outside any building -> Cancel connection
         conSelected = false;
     }
     //No button but connection selected->Draw curve
@@ -191,8 +164,8 @@ void Controller::CheckNewConnection(WorldMap* &worldMap){
             DrawLineBezier(selectable->GetCenter(), GetScreenToWorld2D(GetMousePosition(), *camera), 4, PINK );
         }
     }
-    
-
+    conCreated =true;
+ 
 }
 
 
@@ -227,4 +200,67 @@ bool Controller::SelectArea(WorldMap* &worldMap){
     }
     
     return !selectedVector.empty();
+}
+
+void Controller::ClearSelection(){
+    activeSelection = false;
+    for(Selectable* selectable: selectedVector){
+        selectable->NSelected();
+    }
+    selectedVector.clear();
+}
+
+//Selects a building if mouse collision
+bool Controller::SelectOnClick(WorldMap* &worldMap){
+    for(Selectable* selectable: worldMap->GetSelectables()){
+        if( CheckCollisionPointRec(mousePosition, Rectangle{selectable->GetPosition().x, selectable->GetPosition().y, (float)selectable->GetSize(), (float)selectable->GetSize()})){
+            selectable->StoreInitialPosition();
+            selectable->Selected();
+            selectedVector.push_back(selectable);
+            return true;
+        }
+    }
+    return false;
+}
+
+void Controller::CreateConnection(WorldMap* &worldMap, Selectable* target){
+    bool newConnection = false;
+    vector <int> index;
+
+    for(Selectable* selectable: selectedVector){
+
+        int aux = worldMap->ConnectionExists(selectable, target); //-1 if not exists
+
+        if(aux==-1 && selectable != target){//Add new connection
+            worldMap->AddConnection(selectable, target);
+            newConnection = true;
+        }
+        index.push_back(aux);
+    }
+
+    if(!newConnection){
+        for(int i=0; i<index.size(); i++)
+           worldMap->DeleteConnection(index[i]);
+    }
+
+}
+
+// Function template to check if all elements of containee are present in container
+template <typename T>
+bool contains_all_elements(const std::vector<T>& container, const std::vector<T>& containee) {
+    // Count elements in container
+    std::unordered_map<T, int> container_count;
+    for (const T& element : container) {
+        ++container_count[element];
+    }
+
+    // Check elements in containee
+    for (const T& element : containee) {
+        if (container_count[element] == 0) {
+            return false;
+        }
+        --container_count[element];
+    }
+
+    return true;
 }

@@ -61,6 +61,8 @@ void WorldMap::AddConnection(Selectable* BuildingO, Selectable* BuildingT){
     BuildingT->AddInConnection(connections.back());
 }
 
+
+
 // Adds a buildings to the world
 void WorldMap::AddBuilding(Vector2 position){
     buildings.push_back(new Building(50* GetRandomValue(0, 10), 50* GetRandomValue(0, 10), 1));
@@ -105,13 +107,14 @@ int WorldMap::ConnectionExists(Selectable* buildingO, Selectable* buildingT){
 }
 
 // Given an index to the list of connections, delete that conn, handle memory
-void WorldMap::DeleteConnection(Selectable* buildingO, Selectable* buildingT, int i){
+void WorldMap::DeleteConnection(int i){
+
+    connections[i]->GetOrigin()->DeleteOutConnection(connections[i]);
+    connections[i]->GetTarget()->DeleteInConnection(connections[i]);
+
     delete connections[i];
-
-    buildingO->DeleteOutConnection(connections[i]);
-    buildingT->DeleteInConnection(connections[i]);
-
     connections.erase(connections.begin()+i);
+
 }
 
 void WorldMap::DeleteConnectionSelectable(Selectable* selectable){    
@@ -137,4 +140,8 @@ vector<Mine*> WorldMap::GetMines(){
 
 vector<Selectable*> WorldMap::GetSelectables(){
     return selectables;
+}
+
+vector<Connection*> WorldMap::GetConnections(){
+    return connections;
 }
