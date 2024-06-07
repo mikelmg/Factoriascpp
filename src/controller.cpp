@@ -24,10 +24,10 @@ void Controller::Update(WorldMap* &worldMap){
     CheckKeyboard(worldMap);
 
 }
-//TODO Simplify this
+
 void Controller::CheckLeftClick(WorldMap* &worldMap)
 {
-    if(IsMouseButtonDown(MOUSE_LEFT_BUTTON) ){
+    if(IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !conCreated ){
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){//First frame
             LeftButtonPressed(worldMap);
         }
@@ -45,7 +45,10 @@ void Controller::CheckLeftClick(WorldMap* &worldMap)
         }
     }
     else if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)){
-        LeftButtonReleased(worldMap);
+        if (conCreated)
+            conCreated = false;
+        else
+            LeftButtonReleased(worldMap);
     }
 
 }
@@ -163,9 +166,7 @@ void Controller::CheckNewConnection(WorldMap* &worldMap){
         for(Selectable* selectable: selectedVector ){
             DrawLineBezier(selectable->GetCenter(), GetScreenToWorld2D(GetMousePosition(), *camera), 4, PINK );
         }
-    }
-    conCreated =true;
- 
+    } 
 }
 
 
@@ -242,7 +243,7 @@ void Controller::CreateConnection(WorldMap* &worldMap, Selectable* target){
         for(int i=0; i<index.size(); i++)
            worldMap->DeleteConnection(index[i]);
     }
-
+    conCreated = true;
 }
 
 // Function template to check if all elements of containee are present in container
