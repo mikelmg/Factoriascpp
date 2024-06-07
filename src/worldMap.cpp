@@ -45,6 +45,10 @@ void WorldMap::Update(float dt)
 void WorldMap::Draw()
 {
     DrawText("B for new Building", 200, 80, 30, RED);
+    DrawText("Supr to Delete", 200, 120, 30, GREEN);
+    DrawText("RClick for new Connection", 200, 160, 30, BLUE);
+
+
 
     for(auto it = selectables.begin(); it != selectables.end(); ++it)
         (*it)->Draw();

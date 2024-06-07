@@ -1,9 +1,11 @@
 #include "headers/controller.h"
 #include <raymath.h>
 #include <iostream>
+#include <bits/stdc++.h> 
 
 
 void DrawSelectionRectangle(Rectangle rectangle, Color color);
+void PrintConnections(WorldMap* &worldMap);
 
 Controller::Controller(Camera2D* camera){
     this->camera = camera;
@@ -229,19 +231,24 @@ void Controller::CreateConnection(WorldMap* &worldMap, Selectable* target){
     vector <int> index;
 
     for(Selectable* selectable: selectedVector){
-
-        int aux = worldMap->ConnectionExists(selectable, target); //-1 if not exists
-
-        if(aux==-1 && selectable != target){//Add new connection
-            worldMap->AddConnection(selectable, target);
-            newConnection = true;
-        }
+        if(selectable != target){
+            int aux = worldMap->ConnectionExists(selectable, target); //-1 if not exists
+            if(aux==-1 ){//Add new connection
+                worldMap->AddConnection(selectable, target);
+                newConnection = true;
+            }
         index.push_back(aux);
+        }
     }
 
     if(!newConnection){
-        for(int i=0; i<index.size(); i++)
-           worldMap->DeleteConnection(index[i]);
+        std::sort(index.begin(), index.end(), greater<int>());
+        for (int i = 0; i < index.size(); i++) {
+            PrintConnections(worldMap);
+            worldMap->DeleteConnection(index[i]);
+        }
+        PrintConnections(worldMap);
+
     }
     conCreated = true;
 }
@@ -264,4 +271,17 @@ bool contains_all_elements(const std::vector<T>& container, const std::vector<T>
     }
 
     return true;
+}
+
+void PrintConnections(WorldMap* &worldMap){
+    int i = 0;
+
+    for(Connection* con: worldMap->GetConnections()){
+        std::cout << "Connection: " <<  i << ": ";
+        std::cout << con->GetOrigin()->GetPosition().x << " " << con->GetOrigin()->GetPosition().y
+            << " --> " << con->GetTarget()->GetPosition().x << " " << con->GetTarget()->GetPosition().y;
+        std::cout << std::endl;
+        i++;
+    }
+    std::cout << std::endl;
 }
