@@ -30,6 +30,8 @@ public:
     void EraseBuilding(Building* building);
     void AddMine(Vector2 position);
     void EraseMine(Mine* mine);
+    void EraseSelectable(Selectable* sel);
+
 
     void AddConnection(Selectable* BuildingO, Selectable* BuildingT);                   // Creates a new connection between two given buildings
     int ConnectionExists(Selectable* buildingO, Selectable* buildingT);                 // Given two buildings, returns -1 if a connection between two given buildings does not exist or the index in the list of connections to it

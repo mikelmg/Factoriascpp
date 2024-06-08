@@ -77,7 +77,7 @@ class Building: public Selectable //Declaration forward
 public:
     Building();
     Building(int x, int y, int level);
-    ~Building() override;
+    // ~Building() override;
 
     void Draw();
     void DrawSelection();

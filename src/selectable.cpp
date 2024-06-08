@@ -4,18 +4,8 @@
 #include <algorithm>
 
 Selectable::~Selectable() {
-    for (Connection* con: inConnections) {
-        con->GetOrigin()->DeleteOutConnection(con);
-        delete con;
-    }
     inConnections.clear();
-
-    for (Connection* con: outConnections) {
-        con->GetTarget()->DeleteInConnection(con);
-        delete con;
-    }
     outConnections.clear();
-
     inventary.clear();
 }
 

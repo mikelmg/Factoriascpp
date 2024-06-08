@@ -1,7 +1,7 @@
 #include "headers/controller.h"
 #include <raymath.h>
 #include <iostream>
-#include <bits/stdc++.h> 
+#include <algorithm> 
 
 
 void DrawSelectionRectangle(Rectangle rectangle, Color color);
@@ -105,14 +105,11 @@ void Controller::CheckKeyboard(WorldMap* &worldMap){
 
     if (IsKeyPressed(KEY_DELETE) && activeSelection) {
         cout << "DELETING" << endl;
+        PrintConnections(worldMap);
         for (Selectable* selectable: selectedVector) {
-            if (selectable->GetSelectableType() == BUILDING)
-                worldMap->EraseBuilding((Building*)selectable);
-            else if (selectable->GetSelectableType() == MINE)
-                worldMap->EraseMine((Mine*)selectable);
-            // else if (selectable->GetSelectableType() == BUFFER)
-            //     worldMap->EraseBuffer((Buffer*)selectable);
+            worldMap->EraseSelectable(selectable);
         }
+        PrintConnections(worldMap);
         selectedVector.clear();
         activeSelection = false;
     }
@@ -161,6 +158,7 @@ void Controller::CheckNewConnection(WorldMap* &worldMap){
 
             }           
         }
+        PrintConnections(worldMap);
         conSelected = false;
     }
     //No button but connection selected->Draw curve

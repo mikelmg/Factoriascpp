@@ -20,7 +20,7 @@ Connection::Connection(Selectable *origin, Selectable *target)
 
 
 Connection::~Connection(){
-    items.erase(items.begin(), items.end());
+    items.clear();
 }
 
 void Connection::Selected()

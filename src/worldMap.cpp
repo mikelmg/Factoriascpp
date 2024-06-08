@@ -72,27 +72,36 @@ void WorldMap::AddBuilding(Vector2 position){
     selectables.push_back(buildings.back());
 }
 
-// Erases a building from the world
-void WorldMap::EraseBuilding(Building* building){
-    buildings.erase(remove(buildings.begin(), buildings.end(), building), buildings.end());
-    selectables.erase(remove(selectables.begin(), selectables.end(), building), selectables.end());
-    building->DeleteAllConnections();
-    DeleteConnectionSelectable(building);
-    delete building;
+void WorldMap::EraseSelectable(Selectable* sel){
+
+    DeleteConnectionSelectable(sel); //Handles conn memory
+
+    auto it = find(selectables.begin(), selectables.end(), sel);
+    if(it != selectables.end()){
+        selectables.erase(it);
+    }
+    
+    if(sel->GetSelectableType() == BUILDING){
+        auto it = std::find(buildings.begin(), buildings.end(), sel);
+        if(it != buildings.end()){
+            buildings.erase(it);
+        }
+    }
+    else if (sel->GetSelectableType() == MINE){
+        auto it = std::find(mines.begin(), mines.end(), sel);
+        if(it != mines.end()){
+            mines.erase(it);
+        }
+    }
+
+    delete sel;
 }
+
 
 void WorldMap::AddMine(Vector2 position){
     position = {(float)50* GetRandomValue(0, 10), (float)50* GetRandomValue(0, 10)};
     mines.push_back(new Mine(position, COBALT));
     selectables.push_back(mines.back());
-}
-
-void WorldMap::EraseMine(Mine* mine){
-    mines.erase(remove(mines.begin(), mines.end(), mine), mines.end());
-    selectables.erase(remove(selectables.begin(), selectables.end(), mine), selectables.end());
-    mine->DeleteAllConnections();
-    DeleteConnectionSelectable(mine);
-    delete mine;
 }
 
 
@@ -120,14 +129,16 @@ void WorldMap::DeleteConnection(int i){
 
 }
 
-void WorldMap::DeleteConnectionSelectable(Selectable* selectable){    
-    for (auto it = connections.begin(); it != connections.end(); ) {
-        if((*it)->GetOrigin() == selectable || (*it)->GetTarget() == selectable){
-            delete *it;
-            it = connections.erase(it);
-        }
-        else {
-            ++it;
+void WorldMap::DeleteConnectionSelectable(Selectable* selectable) {
+    for (auto connectionIterator = connections.begin(); connectionIterator != connections.end();) {
+        Connection* connection = *connectionIterator;
+        if (connection->GetOrigin() == selectable || connection->GetTarget() == selectable) {
+            connection->GetOrigin()->DeleteOutConnection(connection);
+            connection->GetTarget()->DeleteInConnection(connection);
+            connectionIterator = connections.erase(connectionIterator);
+            delete connection;
+        } else {
+            ++connectionIterator;
         }
     }
 }
