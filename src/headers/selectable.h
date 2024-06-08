@@ -12,7 +12,6 @@ enum SelectableTypes{
 };
 
 class Connection;
-//TODO add class origin of materials that implements Selectable
 class Selectable //Declaration forward
 {
 protected:

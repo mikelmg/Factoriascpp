@@ -18,7 +18,7 @@ public:
     bool SelectArea(WorldMap* &worldMap);
     void ClearSelection();
     bool SelectOnClick(WorldMap* &worldMap);
-    void CreateConnection(WorldMap* &worldMap, Selectable* target); //FIXME Position of origin changes
+    void CreateConnection(WorldMap* &worldMap, Selectable* target); 
 
 private:
     Camera2D* camera;
