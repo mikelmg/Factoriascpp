@@ -1,6 +1,8 @@
 #include "headers/building.h"
 #include <raymath.h>
 #include <algorithm>
+#include <string>
+#include "headers/item.h"
 
 //FIXME change to recipe
 #define OUTPUT_FREQUENCY 0.4
@@ -27,9 +29,27 @@ Building::Building(int x, int y, int level){
     selected = false;
 }
 
+// Building::~Building() {
+//     //Delete all connections from this building
+//     for (Connection* con: inConnections) {
+//         con->GetOrigin()->DeleteOutConnection(con);
+//         delete con;
+//     }
+//     inConnections.clear();
+
+//     for (Connection* con: outConnections) {
+//         con->GetTarget()->DeleteInConnection(con);
+//         delete con;
+//     }
+//     outConnections.clear();
+
+//     inventary.clear();
+
+// }
+
 void Building::Production(const float &dt){
 
-    //TODO Implement Recipes
+    //TODO Add class Recipes
         
     spawnTimer += dt;
     int amountProduced = spawnTimer / OUTPUT_FREQUENCY;
@@ -37,7 +57,7 @@ void Building::Production(const float &dt){
     if(spawnTimer >= OUTPUT_FREQUENCY){
         for(Connection* con: outConnections){//Every Conn
             for(int i = 1; i <= amountProduced; i++)//In case of lag
-                con->AddItem(spawnTimer-OUTPUT_FREQUENCY*i);//Is this order right?
+                AddItemsToConnection(con, spawnTimer-OUTPUT_FREQUENCY*i);//Is this order right?
         }
         spawnTimer=0;
     }
@@ -47,6 +67,16 @@ void Building::Production(const float &dt){
 
 void Building::Draw()
 {
+    
+    for (auto const& [key, val] : inventary){
+        std::string text = Item::toString(key);
+        
+        text.append(": ");
+        text.append(std::to_string(val));
+
+        DrawText(text.data(), position.x, position.y -20, 20, GREEN);
+    }
+
     Color color = this->color;
     if (selected){
         DrawSelection();
@@ -60,59 +90,6 @@ Vector2 Building::GetCenter()
     return Vector2(Vector2AddValue(position, BUILDING_SIZE/2) );
 }
 
-void Building::UpdateConnections()
-{
-    for(Connection* con: inConnections){
-        con->UpdateControl();
-        con->UpdateBezierLength();
-    }
-
-    for(Connection* con: outConnections){
-        con->UpdateControl();
-        con->UpdateBezierLength();
-    }
-}
-
-void Building::AddInConnection(Connection* con){
-    inConnections.push_back(con);
-}
-
-void Building::AddOutConnection(Connection* con){
-    outConnections.push_back(con);
-}
-
-void Building::DeleteInConnection(Connection* con){
-    // Find the element in the vector
-    std::vector<Connection*>::iterator it = std::find(inConnections.begin(), inConnections.end(), con);
-
-    // If the element is found, erase it from the vector
-    if (it != inConnections.end()) {
-        inConnections.erase(it);
-    }
-}
-
-void Building::DeleteOutConnection(Connection* con){
-    // Find the element in the vector
-    std::vector<Connection*>::iterator it = std::find(outConnections.begin(), outConnections.end(), con);
-
-    // If the element is found, erase it from the vector
-    if (it != outConnections.end()) {
-        outConnections.erase(it);
-    }
-
-    // inventary.inventary[0];
-}
-
-
-void Building::AddItemsToConnection(Connection* con, float position){
-    con->AddItem(position);
-}
-
-void Building::AddItemsToInventary(ItemsType type, int amount){
-    inventary[type]+=amount;
-}
-
-
 void Building::DrawSelection(){
     #define rectangle Rectangle{position.x-2, position.y-2, BUILDING_SIZE+2, BUILDING_SIZE+2}
     DrawRectangleRoundedLines(rectangle, 0.5, 4, 1, RED);
@@ -123,7 +100,12 @@ Rectangle Building::GetRectangle(){
     return Rectangle{position.x, position.y, BUILDING_SIZE, BUILDING_SIZE};
 }
 
+int Building::GetSize() {
+    return BUILDING_SIZE;
+}
 
-
+SelectableTypes Building::GetSelectableType() {
+    return BUILDING;
+}
 
 

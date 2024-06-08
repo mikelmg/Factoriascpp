@@ -23,13 +23,13 @@
             }
           ],
           "windows": {
-            "miDebuggerPath": "C:/raylib/w64devkit/bin/gdb.exe",
+            "miDebuggerPath": "C:/raylib/w64devkit/bin/gdb.exe"
           },
           "osx": {
             "MIMode": "lldb"
           },
           "linux": {
-            "miDebuggerPath": "/usr/bin/gdb",
+            "miDebuggerPath": "/usr/bin/gdb"
           },
           "preLaunchTask": "build debug"
         },
@@ -54,7 +54,15 @@
           "linux": {
             "miDebuggerPath": "/usr/bin/gdb"
           },
-          "preLaunchTask": "build release",
+          "preLaunchTask": "build release"
+        },
+        {
+          "type": "cmake",
+          "request": "launch",
+          "name": "Debug portfile(s)",
+          "cmakeDebugType": "external",
+          "pipeName": "\\\\.\\pipe\\vcpkg_ext_portfile_dbg",
+          "preLaunchTask": "Debug vcpkg commands"
         }
       ]
     }

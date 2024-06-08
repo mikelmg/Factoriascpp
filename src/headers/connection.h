@@ -8,12 +8,15 @@
 const int ITEM_VELOCITY = 70;
 const float ITEM_SPEED = 120.f;
 
+class Selectable;
 
 class Connection //Declaration forward
 {
 public:
     Connection();
     Connection(Selectable* x, Selectable* y);
+    ~Connection();
+    
     void Selected();
     void NSelected();
     void Update(float dt);

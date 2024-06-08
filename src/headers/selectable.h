@@ -1,20 +1,40 @@
 #pragma once
 #include <raylib.h>
 #include <vector>
+#include "connection.h"
+#include "item.h"
+#include <unordered_map>
 
+enum SelectableTypes{
+    BUILDING,
+    BUFFER,
+    MINE
+};
 
+class Connection;
 class Selectable //Declaration forward
 {
 protected:
     Vector2 position;                                            // Coordinates in the world (top left corner of the object)
     Vector2 selectedPosition;                                    // Original position when dragged 
 
+    std::vector<Connection*> inConnections;
+    std::vector<Connection*> outConnections;
+
+    std::unordered_map<ItemsType, int> inventary;
+
+
     bool selected;                                               // The Selectable is currently been selected (to move, act, etc)
 
 public:
+    virtual ~Selectable();	
+
     void CenterPosition();                                              // Rounds position of the object to snap to grid
     static Color ApplyBlueFilter(Color originalColor);                  // Given a color, returns it with a blue filter
     void StoreInitialPosition();                                        // Sets selectedPosition to position
+    virtual void AddItemsToConnection(Connection* con, float position);
+    void AddItemsToInventary(ItemsType type, int amount);
+    void DeleteAllConnections();
 
     virtual void Draw() = 0;                                            // Abstract: Draw the object by it's own implementation
     virtual void DrawSelection()= 0;                                    // Abstract: Draws the object selection mark by it's own implementation                     
@@ -25,6 +45,18 @@ public:
 
     Vector2 GetPosition();                                              // Get Coordinates in the world (top left corner of the object)
     virtual Vector2 GetCenter() = 0;                                    // Abstract: Get the center of the object, calculated from the position and size
+    virtual Rectangle GetRectangle();
     Vector2 GetSelectedPosition();                                      // Get Original position when dragged
     bool GetSelected();                                                 // Get if it is currently been selected (to move, act, etc)
+    virtual int GetSize() = 0;
+    virtual SelectableTypes GetSelectableType() = 0;
+
+
+
+    void UpdateConnections();
+    void AddInConnection(Connection* con);
+    void AddOutConnection(Connection* con);
+    void DeleteInConnection(Connection* con);
+    void DeleteOutConnection(Connection* con); 
+
 };

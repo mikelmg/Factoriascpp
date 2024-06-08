@@ -1,6 +1,13 @@
 #include "headers/selectable.h"
 #include "headers/backgroundMesh.h"
 #include <cmath> // Include this header for fmod
+#include <algorithm>
+
+Selectable::~Selectable() {
+    inConnections.clear();
+    outConnections.clear();
+    inventary.clear();
+}
 
 // Rounds position of the object to snap to grid
 void Selectable::CenterPosition(){
@@ -58,4 +65,72 @@ void Selectable::NSelected(){
 // Get if it is currently been selected (to move, act, etc)
 bool Selectable::GetSelected(){
     return selected; 
+}
+
+void Selectable::AddItemsToConnection(Connection* con, float position){
+    con->AddItem(position);
+    inventary[COBALT]--;
+}
+
+void Selectable::AddItemsToInventary(ItemsType type, int amount){
+    inventary[type]+=amount;
+}
+
+void Selectable::UpdateConnections()
+{
+    for(Connection* con: inConnections){
+        con->UpdateControl();
+        con->UpdateBezierLength();
+    }
+
+    for(Connection* con: outConnections){
+        con->UpdateControl();
+        con->UpdateBezierLength();
+    }
+}
+
+void Selectable::AddInConnection(Connection* con){
+    inConnections.push_back(con);
+}
+
+void Selectable::AddOutConnection(Connection* con){
+    outConnections.push_back(con);
+}
+
+void Selectable::DeleteInConnection(Connection* con){
+    // Find the element in the vector
+    std::vector<Connection*>::iterator it = std::find(inConnections.begin(), inConnections.end(), con);
+
+    // If the element is found, erase it from the vector
+    if (it != inConnections.end()) {
+        inConnections.erase(it);
+    }
+}
+
+void Selectable::DeleteOutConnection(Connection* con){
+    // Find the element in the vector
+    std::vector<Connection*>::iterator it = std::find(outConnections.begin(), outConnections.end(), con);
+
+    // If the element is found, erase it from the vector
+    if (it != outConnections.end()) {
+        outConnections.erase(it);
+    }
+
+    // inventary.inventary[0];
+}
+
+Rectangle Selectable::GetRectangle(){
+    return Rectangle{position.x, position.y, 40, 40};
+}
+
+void Selectable::DeleteAllConnections(){
+    for(Connection* con: inConnections){
+        con->GetOrigin()->DeleteOutConnection(con);
+        this->DeleteInConnection(con);
+    }
+
+    for(Connection* con: outConnections){
+        con->GetTarget()->DeleteInConnection(con);
+        this->DeleteOutConnection(con);
+    }   
 }
