@@ -1,5 +1,6 @@
 #include "headers/worldMap.h"
 #include "headers/building.h"
+#include "headers/recipe.h"
 #include <raymath.h>
 #include <math.h>
 #include <iostream>
@@ -21,6 +22,9 @@ WorldMap::WorldMap()
     selectables.push_back(buildings[3]);
 
     selectables.push_back(mines[0]);
+
+    readRecipesFile();
+    printRecipes();
 }
 
 // Updates world in each frame, buildings, connections etc

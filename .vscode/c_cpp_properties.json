@@ -37,7 +37,7 @@
             ],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
-            "cppStandard": "c++14",
+            "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64"
         },
         {
@@ -54,7 +54,7 @@
                 "PLATFORM_DESKTOP"
             ],
             "cStandard": "c11",
-            "cppStandard": "c++14",
+            "cppStandard": "c++17",
             "intelliSenseMode": "gcc-x64"
         }
     ],

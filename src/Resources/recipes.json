@@ -1,0 +1,17 @@
+{
+    "recipes": [
+        {
+            "outputType": ["IRON"],
+            "outputAmmountPerSecond": [10],
+            "inputType": ["COBALT"],
+            "inputAmmountPerSecond": [10]
+        },
+        {
+            "outputType": ["LEAD"],
+            "outputAmmountPerSecond": [10],
+            "inputType": ["ALUMINIUM", "TIN"],
+            "inputAmmountPerSecond": [10, 10]
+        }
+
+    ]
+}

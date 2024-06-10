@@ -33,5 +33,7 @@ public:
     static void Draw(float upSize, Vector2 position, ItemsType type);           // Draws any Item with a given coordinates, type and current upsize
     static std::string toString(ItemsType type);
     static Color toColor(ItemsType type);
+    static ItemsType toItemsType(std::string type);
+    static std::vector<ItemsType> toItemsTypeV(std::vector <std::string> types);
 
 };
