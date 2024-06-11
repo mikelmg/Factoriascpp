@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include "selectable.h"
 #include "connection.h"
+#include "recipe.hpp"
+
 
 #define PRODUCTION_LEVELS_FILE "src/Resources/facts - Import.csv"
 #define MAX_ITEM_UPSCALE 5
@@ -94,6 +96,8 @@ private:
     int level;
     Color color;
     float spawnTimer;
+
+    Recipe* recipe;
 };
 
 

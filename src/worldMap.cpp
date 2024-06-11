@@ -1,6 +1,6 @@
 #include "headers/worldMap.h"
 #include "headers/building.h"
-#include "headers/recipe.h"
+#include "headers/recipe.hpp"
 #include <raymath.h>
 #include <math.h>
 #include <iostream>
