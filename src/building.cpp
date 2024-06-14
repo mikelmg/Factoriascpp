@@ -15,7 +15,7 @@ Building::Building(){
     this->level = 1;
     this->color = LVLCOLORS[level];
 
-    recipe = NO_RECIPE;
+    recipe = 0;
 }
 
 Building::Building(int x, int y, int level){
@@ -30,7 +30,7 @@ Building::Building(int x, int y, int level){
     spawnTimer = 0;
     selected = false;
 
-    recipe = NO_RECIPE;
+    recipe = 0;
 }
 
 // Building::~Building() {
@@ -112,14 +112,10 @@ SelectableTypes Building::GetSelectableType() {
     return BUILDING;
 }
 
-RecipeType Building::GetRecipe(){
-    return recipe;
-}
-
-void Building::SetRecipe(RecipeType recipe){
-    this->recipe = recipe;
+int* Building::GetRecipe(){
+    return &recipe;
 }
 
 void Building::SetRecipe(int recipe){
-    this->recipe = (RecipeType)recipe;
+    this->recipe = recipe;
 }
