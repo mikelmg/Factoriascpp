@@ -32,4 +32,7 @@ private:
     bool activeSelection;
     bool conCreated;
 
+    bool editMode;
+    int selectedRecipe;
+
 };

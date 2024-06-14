@@ -90,6 +90,10 @@ public:
     void Production(const float &dt);
 
     Rectangle GetRectangle() override;
+    RecipeType GetRecipe();
+    void SetRecipe(RecipeType recipe);
+    void SetRecipe(int recipe);
+
     //TODO Make Buildings create Items at speed proportinal to their lvl
 
 private:
@@ -97,7 +101,7 @@ private:
     Color color;
     float spawnTimer;
 
-    Recipe* recipe;
+    RecipeType recipe;
 };
 
 

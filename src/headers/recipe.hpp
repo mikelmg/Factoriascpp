@@ -7,8 +7,18 @@
 
 using json = nlohmann::json;
 
-struct Recipe {
+void readRecipesFile();
+void printRecipes();
 
+//NON DYNAMIC GENERATION
+enum RecipeType {
+    NO_RECIPE,
+    IRON10_TO_COBALT_10,
+    LEAD10_TO_ALUMINIUM10_TIN10
+};
+
+
+struct Recipe {
     std::vector<ItemsType> outputType;
     std::vector<int> outputAmmountPerSecond;
 
@@ -16,9 +26,9 @@ struct Recipe {
     std::vector<int> inputAmmountPerSecond;
 };
 
-std::vector<Recipe> recipes;
+inline std::vector<Recipe> recipes;
 
-void readRecipesFile() {
+inline void readRecipesFile() {
     std::ifstream i("src/Resources/recipes.json");
     if (!i.is_open()) {
         std::cerr << "Failed to open recipes.json\n";
@@ -45,7 +55,7 @@ void readRecipesFile() {
     }
 }
 
-void printRecipes(){
+inline void printRecipes(){
 
     for(auto it = recipes.begin(); it != recipes.end(); ++it){
 

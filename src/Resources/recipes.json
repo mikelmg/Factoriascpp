@@ -1,6 +1,12 @@
 {
     "recipes": [
         {
+            "outputType": [],
+            "outputAmmountPerSecond": [],
+            "inputType": [],
+            "inputAmmountPerSecond": []            
+        },
+        {
             "outputType": ["IRON"],
             "outputAmmountPerSecond": [10],
             "inputType": ["COBALT"],

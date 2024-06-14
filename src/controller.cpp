@@ -2,7 +2,7 @@
 #include <raymath.h>
 #include <iostream>
 #include <algorithm> 
-
+#include "headers/recipeMenu.h"
 
 void DrawSelectionRectangle(Rectangle rectangle, Color color);
 void PrintConnections(WorldMap* &worldMap);
@@ -13,6 +13,7 @@ Controller::Controller(Camera2D* camera){
     areaPreSelected = false;
     activeSelection = false;
     conCreated = false;
+    editMode = false;
 }
 
 void Controller::UpdateMousePosition(){
@@ -25,6 +26,7 @@ void Controller::Update(WorldMap* &worldMap){
     CheckLeftClick(worldMap);
     CheckKeyboard(worldMap);
 
+    recipeMenu(worldMap, mousePosition, editMode);
 }
 
 void Controller::CheckLeftClick(WorldMap* &worldMap)
