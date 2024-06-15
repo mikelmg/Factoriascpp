@@ -21,7 +21,7 @@ int main()
 {
 
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "Factores!");
-    // SetTargetFPS(60);
+    SetTargetFPS(60);
 
     Camera2D camera = { 0 };
     camera.zoom = 1.0f;
@@ -43,7 +43,7 @@ int main()
             camera.target = Vector2Add(camera.target, delta);
         }
 
-                float wheel = GetMouseWheelMove();
+        float wheel = GetMouseWheelMove();
         if (wheel != 0)
         {
             // Get the world point that is under the mouse
@@ -78,12 +78,13 @@ int main()
         controller.Update(worldMap);
         worldMap->Update(GetFrameTime());
 
-        worldMap->Draw();
-
-        //Linea comparacion items
-        DrawRectangle(5, 58, SCREENWIDTH, 2, BLUE);
+        worldMap->Draw();        
         
         EndMode2D();
+
+        //UI
+        DrawRectangle(0, 0, SCREENWIDTH, 20, BLUE);
+        DrawText("Inventary", 5, 5, 10, BLACK);
         
         DrawFPS(10, 10);
 

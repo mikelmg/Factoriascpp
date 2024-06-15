@@ -26,7 +26,7 @@ void Controller::Update(WorldMap* &worldMap){
     CheckLeftClick(worldMap);
     CheckKeyboard(worldMap);
 
-    recipeMenu(worldMap, mousePosition, editMode);
+    recipeMenu(worldMap, mousePosition, editMode, camera);
 }
 
 void Controller::CheckLeftClick(WorldMap* &worldMap)

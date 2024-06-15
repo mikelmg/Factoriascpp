@@ -13,7 +13,7 @@ void searchBuilding(WorldMap* worldMap, Vector2 mousePosition, Vector2& dropdown
 
 
 //TODO MAKE DROPBOX PRETTIER
-inline void recipeMenu(WorldMap* &worldMap, Vector2 mousePosition, bool editMode) {
+inline void recipeMenu(WorldMap* &worldMap, Vector2 mousePosition, bool editMode, Camera2D* camera) {
 
     static Vector2 dropdownPosition;
     static bool show;
@@ -31,14 +31,21 @@ inline void recipeMenu(WorldMap* &worldMap, Vector2 mousePosition, bool editMode
             show = false;
             searchBuilding(worldMap, mousePosition, dropdownPosition, buildingSelected, show);
             cout << recipes.size() << endl;
-            if(CheckCollisionPointRec(mousePosition, Rectangle{dropdownPosition.x, dropdownPosition.y, DROPDOWN_MENU_SIZE_X, DROPDOWN_MENU_SIZE_Y * (recipes.size()+1)}))
+            if(CheckCollisionPointRec(mousePosition, Rectangle{dropdownPosition.x, dropdownPosition.y, DROPDOWN_MENU_SIZE_X, DROPDOWN_MENU_SIZE_Y * (recipes.size()+1) + 5}))
                 show = true;
         }
     }
 
     if(show){
-        Rectangle dropdownRectangle = { dropdownPosition.x, dropdownPosition.y, DROPDOWN_MENU_SIZE_X, DROPDOWN_MENU_SIZE_Y };
-        resultDropBox = GuiDropdownBox(dropdownRectangle, recipeNames, buildingSelected->GetRecipe(), editMode);
+        cout << "Offset: "<< camera->offset.x << ", " << camera->offset.y << endl;
+        cout << "Target: "<< camera->target.x << ", " << camera->target.y << endl;
+        Rectangle dropdownRectangle = { (dropdownPosition.x - camera->target.x) * camera->zoom + camera->offset.x, 
+            (dropdownPosition.y- camera->target.y) * camera->zoom + camera->offset.y, DROPDOWN_MENU_SIZE_X, DROPDOWN_MENU_SIZE_Y };
+
+        EndMode2D();
+        resultDropBox = GuiDropdownBox( dropdownRectangle, recipeNames, buildingSelected->GetRecipe(), editMode);
+        BeginMode2D(*camera);
+
         editMode = true;
     } 
 }
