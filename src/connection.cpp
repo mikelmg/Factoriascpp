@@ -103,3 +103,10 @@ void Connection::UpdateBezierLength() {
         prevPoint = point; // Actualizar el punto anterior
     }
 }
+
+void Connection::ChangeType(ItemsType type){
+    if (this->type != type){
+        this->type = type;
+        items.clear();
+    }
+}

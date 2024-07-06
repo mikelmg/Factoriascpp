@@ -15,6 +15,7 @@ WorldMap::WorldMap()
     buildings.push_back (new Building(100, 200, 1));
 
     mines.push_back (new Mine(Vector2{300, 0}, COBALT));
+    mines.push_back (new Mine(Vector2{300, 300}, IRON));
 
     selectables.push_back(buildings[0]);
     selectables.push_back(buildings[1]);
@@ -22,9 +23,9 @@ WorldMap::WorldMap()
     selectables.push_back(buildings[3]);
 
     selectables.push_back(mines[0]);
+    selectables.push_back(mines[1]);
 
     readRecipesFile();
-    printRecipes();
 }
 
 // Updates world in each frame, buildings, connections etc

@@ -1,0 +1,1 @@
+//TODO In the top part of the screen, count of items to buy buildings. Maybe it increases capacity with milestones

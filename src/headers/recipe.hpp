@@ -13,6 +13,7 @@ void GetRecipeNames();
 
 struct Recipe {
     std::string name;
+    float time;
 
     std::vector<ItemsType> outputType;
     std::vector<int> outputAmmountPerSecond;
@@ -42,6 +43,7 @@ inline void readRecipesFile() {
     for (const auto& recipeJ : recipesJson) {
         Recipe recipe;
 
+        recipe.time = recipeJ["time"];
         recipe.outputType = Item::toItemsTypeV(recipeJ["outputType"]);
         recipeJ.at("outputAmmountPerSecond").get_to(recipe.outputAmmountPerSecond);
         recipe.inputType = Item::toItemsTypeV(recipeJ["inputType"]);

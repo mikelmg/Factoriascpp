@@ -88,6 +88,7 @@ public:
     SelectableTypes GetSelectableType() override;
 
     void Production(const float &dt);
+    bool EnoughItems();
 
     Rectangle GetRectangle() override;
     int* GetRecipe();
@@ -101,6 +102,7 @@ private:
     float spawnTimer;
 
     int recipe;
+    bool crafting;
 };
 
 

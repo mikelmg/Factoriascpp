@@ -1,0 +1,1 @@
+//TODO To drag and build buildings, in left or bottom.

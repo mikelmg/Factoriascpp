@@ -6,7 +6,7 @@
 static const int MINE_SIZE = 60;
 
 
-
+//TODO Mines should increase production when reaching milestones
 class Mine: public Selectable{
 public:
     Mine();

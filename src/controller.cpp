@@ -2,7 +2,7 @@
 #include <raymath.h>
 #include <iostream>
 #include <algorithm> 
-#include "headers/recipeMenu.h"
+#include "headers/recipeMenu.hpp"
 
 void DrawSelectionRectangle(Rectangle rectangle, Color color);
 void PrintConnections(WorldMap* &worldMap);

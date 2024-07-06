@@ -12,6 +12,7 @@ enum SelectableTypes{
 };
 
 class Connection;
+//TODO Create sockets for connections, centered considering ammount of in and out connections
 class Selectable //Declaration forward
 {
 protected:

@@ -16,6 +16,7 @@ Building::Building(){
     this->color = LVLCOLORS[level];
 
     recipe = 0;
+    crafting = false;
 }
 
 Building::Building(int x, int y, int level){
@@ -31,6 +32,7 @@ Building::Building(int x, int y, int level){
     selected = false;
 
     recipe = 0;
+    crafting = false;
 }
 
 // Building::~Building() {
@@ -55,6 +57,8 @@ void Building::Production(const float &dt){
 
     //TODO Add class Recipes
         
+
+    EnoughItems();
     spawnTimer += dt;
     int amountProduced = spawnTimer / OUTPUT_FREQUENCY;
 
@@ -99,6 +103,19 @@ void Building::DrawSelection(){
     DrawRectangleRoundedLines(rectangle, 0.5, 4, 1, RED);
 }
 
+bool Building::EnoughItems(){
+
+    // std::cout <<recipes[recipe].name << std::endl;
+
+    if (recipe != 0){
+        for (int i = 0; i < recipes[recipe].inputType.size(); i++){
+            // std::cout << "Inventary: " << Item::toString(recipes[recipe].inputType[i]) 
+            //     << " " << inventary[recipes[recipe].inputType[i]] << std::endl;
+        }
+    }
+    
+    return true;
+}
 
 Rectangle Building::GetRectangle(){
     return Rectangle{position.x, position.y, BUILDING_SIZE, BUILDING_SIZE};
