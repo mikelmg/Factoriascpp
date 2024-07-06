@@ -15,7 +15,6 @@ void searchBuilding(WorldMap* worldMap, Vector2 mousePosition, Vector2& dropdown
 
 
 //TODO MAKE DROPBOX PRETTIER
-//TODO Change to double click
 //TODO Add change recipe for multiple buildings
 inline void recipeMenu(WorldMap* &worldMap, Vector2 mousePosition, bool editMode, Camera2D* camera) {
 
